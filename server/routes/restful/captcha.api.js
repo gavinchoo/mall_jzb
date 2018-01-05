@@ -5,7 +5,7 @@ var ResponseResult = require('../model/response.result')
 var UserDb = require('../../db/mongo/schema/user.schema')
 
 module.exports = {
-    init: function (app) {
+    init: function (app, auth) {
         app.post('/Public/getCaptcha', this.getCaptcha)
         app.get('/Public/getCaptcha', this.getCaptcha)
     },

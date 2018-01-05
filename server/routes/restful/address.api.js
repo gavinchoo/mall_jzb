@@ -3,11 +3,11 @@ var AddressDb = require('../../db/mongo/schema/address.schema')
 var passport = require('passport')
 
 module.exports = {
-    init: function (app) {
-        app.post('/User/addReceiveAddr', passport.authenticate('bearer', {session: false}),this.addReceiveAddr)
-        app.post('/User/delReceiveAddr', passport.authenticate('bearer', {session: false}), this.delReceiveAddr)
-        app.post('/User/editReceiveAddr', passport.authenticate('bearer', {session: false}), this.editReceiveAddr)
-        app.post('/User/getReceiveAddrs', passport.authenticate('bearer', {session: false}), this.getReceiveAddrs)
+    init: function (app, auth) {
+        app.post('/User/addReceiveAddr', auth,this.addReceiveAddr)
+        app.post('/User/delReceiveAddr', auth, this.delReceiveAddr)
+        app.post('/User/editReceiveAddr', auth, this.editReceiveAddr)
+        app.post('/User/getReceiveAddrs', auth, this.getReceiveAddrs)
     },
 
     addReceiveAddr: function (req, res) {

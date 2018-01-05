@@ -1,9 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var fs = require('fs')
+var passport = require('passport')
+var authenticator = passport.authenticate('bearer', {session: false})
 
 var FS_PATH_SERVICES = './server/routes/restful/';
 var REQUIRE_PATH_SERVICES = './restful/';
+
 
 router.options('*', function (req, res, next) {
     next();
@@ -13,7 +16,7 @@ try {
     var list = fs.readdirSync(FS_PATH_SERVICES)
     for (var i = 0; i < list.length ; i++){
         var service = require(REQUIRE_PATH_SERVICES + list[i])
-        service.init && service.init(router)
+        service.init && service.init(router, authenticator)
     }
 }catch (e){
     console.error(e)
