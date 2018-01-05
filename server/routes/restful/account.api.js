@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 var UserDb = require('../../db/mongo/index').User
 
 function createToken (username) {
-    var token = 'Bearer ' + jwt.sign({name: username}, config.secret, {
+    var token = jwt.sign({name: username}, config.secret, {
         expiresIn: config.expiresIn
     });
     return token
@@ -57,7 +57,7 @@ module.exports = {
                     else {
                         var token = createToken(data.username)
                         res.json(new ResponseResult(1, '注册成功', {
-                            token: token,
+                            token: 'Bearer ' + token,
                             name: data.username
                         }))
                     }
@@ -88,7 +88,7 @@ module.exports = {
                 console.log(result)
                 if (result != null && result.nModified == 1) {
                     res.json(new ResponseResult(1, "认证成功", {
-                        token: token,
+                        token: 'Bearer ' + token,
                         name: username
                     }));
                 } else {

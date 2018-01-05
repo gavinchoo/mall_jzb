@@ -26,6 +26,7 @@ describe('mall-api-test', () => {
 
 
     it('getReceiveAddrs', (done) => {
+        console.log(token)
         var body = {page: 2, pagesize: 10}
         api.post('/Api/User/getReceiveAddrs')
           .set("Authorization", token)
