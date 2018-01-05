@@ -1,4 +1,4 @@
-var mongoose = require('../dbconnect')
+var mongoose = require('mongoose')
 
 var Schema = mongoose.Schema
 var UserSchema = new Schema({
@@ -7,6 +7,4 @@ var UserSchema = new Schema({
     token: String,
     createtime: Date,
 })
-var UserDb = mongoose.model('users', UserSchema)
-
-module.exports = UserDb
+mongoose.model('User', UserSchema)

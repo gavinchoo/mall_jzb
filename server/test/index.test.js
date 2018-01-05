@@ -4,14 +4,12 @@ const supertest = require('supertest')
 describe('mall-api-test', () => {
     const api = supertest('http://localhost:3000')
     var token = "";
-    it.only('Register', (done) => {
-        var body = {username: 'admin1333', pwd: '12345'}
-        api.post('/Api/User/Register')
+    it('Accesstoken', (done) => {
+        var body = {username: 'admin', pwd: '123456'}
+        api.post('/Api/User/Accesstoken')
             .send(body)
             .expect(200)
             .end(function (req, res) {
-                console.log(res.text)
-
                 if (res.body.code == 0){
                     api.post('/Api/User/Register')
                         .send(body)

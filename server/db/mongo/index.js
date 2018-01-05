@@ -23,5 +23,11 @@ mongoose.connection.on('disconnected', function () {
     console.log('Mongoose connection disconnected');
 });
 
-module.exports = mongoose;
+require('./schema/user')
+require('./schema/address')
+require('./schema/order')
+
+exports.User = mongoose.model('User');
+exports.Order = mongoose.model('Order')
+exports.Address = mongoose.model('Address')
 

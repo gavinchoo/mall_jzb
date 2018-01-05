@@ -2,7 +2,7 @@
 * 验证码相关接口
 * */
 var ResponseResult = require('../model/response.result')
-var UserDb = require('../../db/mongo/schema/user.schema')
+var UserDb = require('../../db/mongo/index').User
 
 module.exports = {
     init: function (app, auth) {

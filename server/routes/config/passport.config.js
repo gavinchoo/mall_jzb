@@ -1,6 +1,6 @@
 var TokenStrategy = require('passport-http-bearer').Strategy;
 var jwt = require('jsonwebtoken');
-var UserDb = require('../../db/mongo/schema/user.schema')
+var UserDb = require('../../db/mongo/index').User
 var tokenConfig = require('./token.config')
 
 module.exports = function (passport) {

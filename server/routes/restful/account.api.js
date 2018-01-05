@@ -6,7 +6,7 @@ var ResponseResult = require('../model/response.result')
 var config = require('../config/token.config')
 const jwt = require('jsonwebtoken');
 
-var UserDb = require('../../db/mongo/schema/user.schema')
+var UserDb = require('../../db/mongo/index').User
 
 function createToken (username) {
     var token = 'Bearer ' + jwt.sign({name: username}, config.secret, {

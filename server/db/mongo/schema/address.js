@@ -1,4 +1,4 @@
-var mongoose = require('../dbconnect')
+var mongoose = require('mongoose')
 
 var Schema = mongoose.Schema
 var AddressSchema = new Schema({
@@ -13,6 +13,4 @@ var AddressSchema = new Schema({
     area_id: String,
     area: String,
 })
-var AddressSchema = mongoose.model('address', AddressSchema)
-
-module.exports = AddressSchema
+mongoose.model('Address', AddressSchema)

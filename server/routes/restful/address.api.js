@@ -1,6 +1,5 @@
 var ResponseResult = require('../model/response.result')
-var AddressDb = require('../../db/mongo/schema/address.schema')
-var passport = require('passport')
+var AddressDb = require('../../db/mongo/index').Address
 
 module.exports = {
     init: function (app, auth) {
