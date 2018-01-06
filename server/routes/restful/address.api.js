@@ -4,7 +4,7 @@ var logger = require('../../common/logger')
 
 module.exports = {
     init: function (app, auth) {
-        app.post('/User/addReceiveAddr', auth,this.addReceiveAddr)
+        app.post('/User/addReceiveAddr', auth, this.addReceiveAddr)
         app.post('/User/delReceiveAddr', auth, this.delReceiveAddr)
         app.post('/User/editReceiveAddr', auth, this.editReceiveAddr)
         app.post('/User/getReceiveAddrs', auth, this.getReceiveAddrs)
@@ -15,9 +15,10 @@ module.exports = {
         props['userid'] = req.user._doc._id
         AddressDb.create(props, function (err, result) {
             if (err) {
-                logger.error(err)
+                logger.error(err.message)
                 res.status(400).json(new ResponseResult(0, err.message))
             } else {
+                console.log(result)
                 if (result == null) {
                     res.json(new ResponseResult(0, '添加地址失败'))
                 }
@@ -32,12 +33,16 @@ module.exports = {
         var props = req.body
         props['userid'] = req.user._doc._id
         AddressDb.remove(props, function (err, result) {
-            if (result == null) {
+            if (err) {
                 logger.error(err)
                 res.json(new ResponseResult(0, '删除地址失败'))
             }
             else {
-                res.json(new ResponseResult(1, '删除地址成功'))
+                if (result.result == 0){
+                    res.json(new ResponseResult(0, '删除地址失败'))
+                }else {
+                    res.json(new ResponseResult(1, '删除地址成功'))
+                }
             }
         })
     },

@@ -24,6 +24,7 @@
     "es6-promise": "^4.1.1",
     "express": "~4.15.5",
     "express-session": "^1.15.6",
+    "express-winston": "^2.4.0",
     "file-stream-rotator": "^0.2.0",
     "fs": "0.0.1-security",
     "isomorphic-fetch": "^2.2.1",
@@ -48,7 +49,8 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^4.0.8",
-    "serve-favicon": "~2.4.5"
+    "serve-favicon": "~2.4.5",
+    "winston": "^2.4.0"
   },
   "devDependencies": {
     "assets-webpack-plugin": "^3.5.1",

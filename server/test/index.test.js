@@ -6,25 +6,25 @@ describe('mall-api-test', () => {
     const api = supertest('http://localhost:8000')
     var token = "";
     it('Accesstoken', (done) => {
-        var body = {username: 'admin21321', pwd: '123456'}
+        var body = {username: '18170880824', pwd: '123456'}
         api.post('/Api/User/Accesstoken')
-            .send(body)
-            .expect(200)
-            .end(function (req, res) {
-                console.log(res.text)
-                if (res.body.code == 0){
-                    api.post('/Api/User/Register')
-                        .send(body)
-                        .expect(200)
-                        .end(function (req, res) {
-                            token = res.body.data.token
-                            done()
-                        })
-                }else {
-                    token = res.body.data.token
-                    done()
-                }
-            })
+          .send(body)
+          .expect(200)
+          .end(function (req, res) {
+              console.log(res.text)
+              if (res.body.code == 0) {
+                  api.post('/Api/User/Register')
+                    .send(body)
+                    .expect(200)
+                    .end(function (req, res) {
+                        token = res.body.data.token
+                        done()
+                    })
+              } else {
+                  token = res.body.data.token
+                  done()
+              }
+          })
     })
 
 
@@ -42,7 +42,7 @@ describe('mall-api-test', () => {
     })
 
     it('addReceiveAddr', (done) => {
-        var body = {realname: "AAAA", address: "dfdsf", province: "广东"}
+        var body = {realname: "AAAA", address: "dfdsf", phone: "21323213", province: "广东", province_id: 213, city: "广东", city_id: 213}
         api.post('/Api/User/addReceiveAddr')
           .set("Authorization", token)
           .send(body)
