@@ -5,6 +5,6 @@ var UserSchema = new Schema({
     username: String,
     pwd: String,
     token: String,
-    createtime: Date,
+    createtime: {type:Date, default: Date.now},
 })
 mongoose.model('User', UserSchema)

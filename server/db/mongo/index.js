@@ -1,26 +1,27 @@
 var mongoose = require('mongoose');
-var DB_URL = 'mongodb://localhost:27017/mall_jzb';
+var config = require('../../constant/config');
+var logger = require('../../common/logger')
 
-mongoose.connect(DB_URL);
+mongoose.connect(config.db);
 /**
  * 连接成功
  */
 mongoose.connection.on('connected', function () {
-    console.log('Mongoose connection open to ' + DB_URL);
+    logger.info('Mongoose connection open to ' + config.db);
 });
 
 /**
  * 连接异常
  */
 mongoose.connection.on('error',function (err) {
-    console.log('Mongoose connection error: ' + err);
+    logger.info('Mongoose connection error: ' + err);
 });
 
 /**
  * 连接断开
  */
 mongoose.connection.on('disconnected', function () {
-    console.log('Mongoose connection disconnected');
+    logger.info('Mongoose connection disconnected');
 });
 
 require('./schema/user')

@@ -1,20 +1,23 @@
 /* eslint-env mocha */
 const supertest = require('supertest')
+const assert = require('power-assert')
 
 describe('mall-api-test', () => {
-    const api = supertest('http://localhost:3000')
+    const api = supertest('http://localhost:8000')
     var token = "";
     it('Accesstoken', (done) => {
-        var body = {username: 'admin', pwd: '123456'}
+        var body = {username: 'admin21321', pwd: '123456'}
         api.post('/Api/User/Accesstoken')
             .send(body)
             .expect(200)
             .end(function (req, res) {
+                console.log(res.text)
                 if (res.body.code == 0){
                     api.post('/Api/User/Register')
                         .send(body)
                         .expect(200)
                         .end(function (req, res) {
+                            token = res.body.data.token
                             done()
                         })
                 }else {
@@ -44,8 +47,9 @@ describe('mall-api-test', () => {
           .set("Authorization", token)
           .send(body)
           .expect(200)
-          .end(function (req, res) {
+          .end(function (err, res) {
               console.log(res.text)
+              assert.ifError(err)
               done()
           })
     })
