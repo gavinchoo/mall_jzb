@@ -27,8 +27,12 @@ mongoose.connection.on('disconnected', function () {
 require('./schema/user')
 require('./schema/address')
 require('./schema/order')
+require('./schema/account')
+require('./schema/file')
 
 exports.User = mongoose.model('User');
+exports.Account = mongoose.model('Account');
 exports.Order = mongoose.model('Order')
 exports.Address = mongoose.model('Address')
+exports.File = mongoose.model('File')
 

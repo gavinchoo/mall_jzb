@@ -36,9 +36,11 @@ app.use(morgan(function (tokens, req, res) {
 
 var apilogDir = path.join(__dirname, config.apilog_dir)
 var serverlogDir = path.join(__dirname, config.serverlog_dir)
+var uploadDir = path.join(__dirname, config.upload_dir)
 // ensure log directory exists
 mkdirsSync(apilogDir)
 mkdirsSync(serverlogDir)
+mkdirsSync(uploadDir)
 
 // create a rotating write stream
 var accessLogStream = FileStreamRotator.getStream({
