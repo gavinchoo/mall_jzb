@@ -24,15 +24,21 @@ mongoose.connection.on('disconnected', function () {
     logger.info('Mongoose connection disconnected');
 });
 
-require('./schema/user')
-require('./schema/address')
-require('./schema/order')
-require('./schema/account')
+require('./schema/user/user')
+require('./schema/address/address')
+require('./schema/address/province')
+require('./schema/address/city')
+require('./schema/address/area')
+require('./schema/user/order')
+require('./schema/user/account')
 require('./schema/file')
 
 exports.User = mongoose.model('User');
 exports.Account = mongoose.model('Account');
 exports.Order = mongoose.model('Order')
 exports.Address = mongoose.model('Address')
+exports.Province = mongoose.model('Province')
+exports.City = mongoose.model('City')
+exports.Area = mongoose.model('Area')
 exports.File = mongoose.model('File')
 
