@@ -8,4 +8,11 @@ var CitySchema = new Schema({
     pinyin: [String],
     location: {lat: Number, lng: Number},
 })
+
+CitySchema.statics.findByProvinceId = function (province_id, callback) {
+    var index = province_id.substring(0, 2)
+    this.find({id: {$regex: `^${index}`}}).sort({id: 1}).exec(callback)
+}
+
 mongoose.model('City', CitySchema)
+

@@ -7,4 +7,16 @@ var UserSchema = new Schema({
     token: String,
     createtime: {type:Date, default: Date.now},
 })
+
+UserSchema.statics.getUserByLoginName = function (username, callback) {
+    if (!username || username.length == 0) {
+        return callback(null, [])
+    }
+    this.findOne({'username': username}, callback)
+}
+
+UserSchema.statics.updateToken = function (username, token, callback) {
+    this.update({'username': username}, {'$set': {'token': token}}, callback)
+}
+
 mongoose.model('User', UserSchema)

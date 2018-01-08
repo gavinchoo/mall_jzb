@@ -1,7 +1,7 @@
 var multer = require('multer')
 var path = require('path')
 var config = require('../../constant/config')
-var FileDb = require('../../db/proxy/index').File
+var FileDb = require('../../db/mongo/index').File
 
 var ResponseResult = require('../model/response.result')
 
@@ -47,11 +47,9 @@ module.exports = {
             file['mimetype'] = fileInfo.mimetype
             file['size'] =  fileInfo.size
             file['userid'] = req.user._doc._id
-            FileDb.createFile(file, function (err, result) {
-                console.log(err)
-                console.log(result)
+            FileDb.create(file, function (err, result) {
                 if (err){
-                    res.status(400).json(new ResponseResult(0, '文件上传失败'))
+                    res.status(400).json(new ResponseResult(0, '文件上传失败', err.message))
                 }else {
                     console.log(result)
                     if (result == null){

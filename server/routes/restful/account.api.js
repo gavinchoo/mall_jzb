@@ -7,8 +7,8 @@ var config = require('../config/token.config')
 const jwt = require('jsonwebtoken');
 var logger = require('../../common/logger')
 
-var UserDb = require('../../db/proxy').User
-var AccountDb = require('../../db/proxy').Account
+var UserDb = require('../../db/mongo/index').User
+var AccountDb = require('../../db/mongo/index').Account
 
 function createToken(username) {
     var token = jwt.sign({name: username}, config.secret, {
@@ -25,12 +25,13 @@ module.exports = {
         app.post('/User/accountInfo', auth, this.accountInfo)
         app.post('/User/modifyAvatar', auth, this.editAvatar)
         app.post('/User/editSex', auth, this.editSex)
+        app.post('/User/editNickname', auth, this.editNickname)
     },
 
     editSex: function (req, res) {
         var userid = req.user._doc._id
         var sex = req.body.sex
-        AccountDb.editSex(userid, sex, function (err, result) {
+        AccountDb.editAccountInfo(userid, {sex: sex}, function (err, result) {
             console.log(result)
             if (err || result == null || result.n == 0) {
                 res.json(new ResponseResult(0, err ? err.message : "修改性别成功"))
@@ -43,12 +44,24 @@ module.exports = {
     editNickname: function (req, res) {
         var userid = req.user._doc._id
         var nickname = req.body.nickname
-        AccountDb.editNickname(userid, nickname, function (err, result) {
+        AccountDb.editAccountInfo(userid, {nickname : nickname}, function (err, result) {
             console.log(result)
             if (err || result == null || result.n == 0) {
                 res.json(new ResponseResult(0, err ? err.message : "修改昵称失败"))
             } else {
                 res.json(new ResponseResult(1, "修改昵称成功"))
+            }
+        })
+    },
+
+    editAvatar: function (req, res) {
+        var userid = req.user._doc._id
+        var avatar_url = "/Api/File/downloadPicture?avatar_id=" + req.body.avatar_id
+        AccountDb.editAccountInfo(userid, {avatar_url : avatar_url}, function (err, result) {
+            if (err || result == null) {
+                res.json(new ResponseResult(0, err ? err.message : "修改头像失败"))
+            } else {
+                res.json(new ResponseResult(1, "修改头像成功"))
             }
         })
     },
@@ -60,18 +73,6 @@ module.exports = {
                 res.json(new ResponseResult(0, err ? err.message : "获取用户信息失败"))
             } else {
                 res.json(new ResponseResult(1, "获取用户信息成功", result))
-            }
-        })
-    },
-
-    editAvatar: function (req, res) {
-        var userid = req.user._doc._id
-        var avatar_url = "/Api/File/downloadPicture?avatar_id=" + req.body.avatar_id
-        AccountDb.editAvatar(userid, avatar_url, function (err, result) {
-            if (err || result == null) {
-                res.json(new ResponseResult(0, err ? err.message : "修改头像失败"))
-            } else {
-                res.json(new ResponseResult(1, "修改头像成功"))
             }
         })
     },
@@ -96,7 +97,7 @@ module.exports = {
             })
         }).then(function () {
             var token = createToken(data.username)
-            UserDb.createUser(data, function (err, result) {
+            UserDb.create(data, function (err, result) {
                 if (err) {
                     logger.error(err)
                     res.json(new ResponseResult(0, '注册失败'))
@@ -104,6 +105,8 @@ module.exports = {
                     if (result == null) {
                         res.json(new ResponseResult(0, '注册失败'))
                     } else {
+                        // 创建账号信息
+                        AccountDb.create({'userid': result._id})
                         res.json(new ResponseResult(1, '注册成功', {
                             token: 'Bearer ' + token,
                             name: data.username

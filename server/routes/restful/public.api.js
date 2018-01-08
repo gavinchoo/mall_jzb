@@ -21,8 +21,8 @@ module.exports = {
     },
 
     getCities: function (req, res) {
-        var province_id = req.body.province_id.substring(0, 2)
-        CityDb.find({id: {$regex: `^${province_id}`}}).sort({id:1}).exec(function (err, result) {
+        var province_id = req.body.province_id
+        CityDb.findByProvinceId(province_id, function (err, result) {
             if (result != null) {
                 res.json(new ResponseResult(1, "获取地址成功", result));
             } else {

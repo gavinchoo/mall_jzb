@@ -10,4 +10,12 @@ var FileSchema = new Schema({
     path: String,
     size: Number,
 })
+
+FileSchema.statics.getFile = function (fileid, callback) {
+    if (!fileid || fileid.length == 0) {
+        return callback(null, [])
+    }
+    this.findOne({'_id': fileid}, callback)
+}
+
 mongoose.model('File', FileSchema)
