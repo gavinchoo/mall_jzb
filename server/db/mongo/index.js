@@ -13,7 +13,7 @@ mongoose.connection.on('connected', function () {
 /**
  * 连接异常
  */
-mongoose.connection.on('error',function (err) {
+mongoose.connection.on('error', function (err) {
     logger.info('Mongoose connection error: ' + err);
 });
 
@@ -33,3 +33,8 @@ exports.City = mongoose.model('City', require('./schema/address/city'))
 exports.Area = mongoose.model('Area', require('./schema/address/area'))
 exports.File = mongoose.model('File', require('./schema/file'))
 
+/**
+ * 商品
+ */
+exports.Category = mongoose.model('Category', require('./schema/product/category'))
+exports.Product = mongoose.model('Product', require('./schema/product/product'))

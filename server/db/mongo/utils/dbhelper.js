@@ -3,7 +3,6 @@ var async = require('async');
 var pageQuery = function(page, pageSize, Model, populate, queryParams, sortParams, callback) {
     var start = (page - 1) * pageSize;
     var result = {
-        pageNumber: page
     };
     async.parallel({
         count: function(done) {
@@ -19,7 +18,6 @@ var pageQuery = function(page, pageSize, Model, populate, queryParams, sortParam
     }, function(err, queryResults) {
         var count = queryResults.count;
         result.total = count;
-        result.totalPages = Math.ceil(count / pageSize);
         result.result = queryResults.records;
         callback(err, result);
     });

@@ -38,7 +38,7 @@ module.exports = {
                 res.json(new ResponseResult(0, '删除地址失败'))
             }
             else {
-                if (result.result == 0){
+                if (result.result.n == 0){
                     res.json(new ResponseResult(0, '删除地址失败'))
                 }else {
                     res.json(new ResponseResult(1, '删除地址成功'))
