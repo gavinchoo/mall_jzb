@@ -19,4 +19,4 @@ UserSchema.statics.updateToken = function (username, token, callback) {
     this.update({'username': username}, {'$set': {'token': token}}, callback)
 }
 
-mongoose.model('User', UserSchema)
+module.exports = UserSchema

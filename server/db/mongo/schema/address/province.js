@@ -9,4 +9,5 @@ var ProvinceSchema = new Schema({
     location: {lat: Number, lng: Number},
     cidx: [Number],
 })
-mongoose.model('Province', ProvinceSchema)
+
+module.exports = ProvinceSchema

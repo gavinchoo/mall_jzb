@@ -13,4 +13,5 @@ var OrderSchema = new Schema({
     area_id: String,
     area: String,
 })
-mongoose.model('Order', OrderSchema)
+
+module.exports = OrderSchema

@@ -14,4 +14,5 @@ var AddressSchema = new Schema({
     area: String,
     is_default: String,
 })
-mongoose.model('Address', AddressSchema)
+
+module.exports = AddressSchema

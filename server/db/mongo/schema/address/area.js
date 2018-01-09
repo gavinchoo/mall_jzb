@@ -6,4 +6,5 @@ var AreaSchema = new Schema({
     fullname: {type: String},
     location: {lat: Number, lng: Number},
 })
-mongoose.model('Area', AreaSchema)
+
+module.exports = AreaSchema

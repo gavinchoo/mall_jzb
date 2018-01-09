@@ -1,6 +1,6 @@
 var multer = require('multer')
 var path = require('path')
-var config = require('../../constant/config')
+var config = require('../constant/config')
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {

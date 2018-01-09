@@ -29,4 +29,4 @@ AccountSchema.statics.getAccountInfo = function (userid, callback) {
     this.findOne({'userid': userid}, callback)
 }
 
-mongoose.model('Account', AccountSchema)
+module.exports = AccountSchema

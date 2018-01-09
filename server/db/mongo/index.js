@@ -24,21 +24,12 @@ mongoose.connection.on('disconnected', function () {
     logger.info('Mongoose connection disconnected');
 });
 
-require('./schema/user/user')
-require('./schema/address/address')
-require('./schema/address/province')
-require('./schema/address/city')
-require('./schema/address/area')
-require('./schema/user/order')
-require('./schema/user/account')
-require('./schema/file')
-
-exports.User = mongoose.model('User');
-exports.Account = mongoose.model('Account');
-exports.Order = mongoose.model('Order')
-exports.Address = mongoose.model('Address')
-exports.Province = mongoose.model('Province')
-exports.City = mongoose.model('City')
-exports.Area = mongoose.model('Area')
-exports.File = mongoose.model('File')
+exports.User = mongoose.model('User', require('./schema/user/user'));
+exports.Account = mongoose.model('Account', require('./schema/user/account'));
+exports.Order = mongoose.model('Order', require('./schema/user/order'))
+exports.Address = mongoose.model('Address', require('./schema/address/address'))
+exports.Province = mongoose.model('Province', require('./schema/address/province'))
+exports.City = mongoose.model('City', require('./schema/address/city'))
+exports.Area = mongoose.model('Area', require('./schema/address/area'))
+exports.File = mongoose.model('File', require('./schema/file'))
 

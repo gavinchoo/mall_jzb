@@ -14,5 +14,5 @@ CitySchema.statics.findByProvinceId = function (province_id, callback) {
     this.find({id: {$regex: `^${index}`}}).sort({id: 1}).exec(callback)
 }
 
-mongoose.model('City', CitySchema)
+module.exports = CitySchema
 

@@ -18,4 +18,4 @@ FileSchema.statics.getFile = function (fileid, callback) {
     this.findOne({'_id': fileid}, callback)
 }
 
-mongoose.model('File', FileSchema)
+module.exports = FileSchema
