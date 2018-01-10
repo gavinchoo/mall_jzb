@@ -3,8 +3,9 @@ import {message} from 'antd'
 import * as CONFIG from '../config'
 
 import StringUtil from '../utils/stringutil'
+import HttpState from '../actions/constant/httpstate'
 
-export function requestPost(route, opt){
+export function requestPost(route, opt) {
     request(route, {}, opt.props, opt.success, opt.error,
       {
           method: 'POST',
@@ -13,7 +14,7 @@ export function requestPost(route, opt){
       })
 }
 
-export function requestGet(route, opt){
+export function requestGet(route, opt) {
     request(route, {}, opt.props, opt.success, opt.error,
       {
           method: 'POST',
@@ -40,7 +41,7 @@ export function request(route, params, props, success = null, error = null, {met
     console.log(`[${method}]:${uri}`)
     fetch(uri, data)
       .then((response) => {
-          if (response.status === 200) {
+          if (response.status == 200) {
               return response.json()
           } else {
               return {code: response.status, message: response.message}
@@ -48,26 +49,22 @@ export function request(route, params, props, success = null, error = null, {met
       })
       .then((result) => {
           console.log(result)
-          if (route == '/api/accesstoken') {
+          if (route == '/Api/User/Accesstoken') {
               sessionStorage.setItem('token', result.token)
           }
-          if (result.code != undefined) {
-              // if (method !== 'GET') dispatch({ type: TYPES.REQUEST_SUCCESS })
-              if (result.code === 400) {
-                  // dispatch({ type: TYPES.LOGGED_OUT })
-              } else if (result.code === 401) {
-                  message.warn('登录认证已过期，请从新登录')
-                  error && error(result)
-                  props.history.push('/admin')
-              } else {
-                  // dispatch({ type: TYPES.REQUEST_ERROR, ...data })
-                  error && error(result)
-              }
-          } else {
+          if (result.code == HttpState.REQ_SUCCESS) {
               success && success(result)
+          } else if (result.code === 401) {
+              message.warn('登录认证已过期，请从新登录')
+              error && error(result)
+              props.history.push('/admin')
+          } else {
+              // dispatch({ type: TYPES.REQUEST_ERROR, ...data })
+              error && error(result)
           }
       })
       .catch((err) => {
           console.warn(err)
+          message.warn(err.message)
       })
 }

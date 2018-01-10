@@ -1,12 +1,12 @@
 import {requestPost} from '../utils/request';
 
 export function loginValidate(opt) {
-    const route = '/api/login';
+    const route = '/Api/User/Login';
     return requestPost(route, opt)
 }
 
 export function accessToken(opt) {
-    const route = '/api/accesstoken';
+    const route = '/Api/User/Accesstoken';
     return requestPost(route, opt)
 }
 

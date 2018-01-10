@@ -1,7 +1,7 @@
 /*
 * 验证码相关接口
 * */
-var ResponseResult = require('../model/response.result')
+var {ResponseSuccess, ResponseError} = require('../model/response.result')
 var UserDb = require('../../db/mongo/index').User
 
 module.exports = {
@@ -15,9 +15,9 @@ module.exports = {
         if (data.type == "register") {
             UserDb.findOne({'username': data.username}, function (err, result) {
                 if (result == null || result == undefined) {
-                    res.json(new ResponseResult(1, "发送成功", {verify: 1234}));
+                    res.json(new ResponseSuccess("发送成功", {verify: 1234}));
                 } else {
-                    res.json(new ResponseResult(0, '账号已存在，不可重复创建'))
+                    res.json(new ResponseError('账号已存在，不可重复创建'))
                 }
             })
         }

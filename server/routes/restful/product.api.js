@@ -1,4 +1,4 @@
-var ResponseResult = require('../model/response.result')
+var {ResponseSuccess, ResponseError} = require('../model/response.result')
 var DBHelper = require('../../db/mongo/utils/dbhelper')
 
 var CategoryDb = require('../../db/mongo/index').Category
@@ -17,9 +17,9 @@ module.exports = {
     addCategory: function (req, res) {
         CategoryDb.create(req.body, function (err, result) {
             if (err || result == null){
-                res.json(new ResponseResult(0, "创建分类失败"))
+                res.json(new ResponseError("创建分类失败"))
             }else {
-                res.json(new ResponseResult(1, "创建分类成功", result))
+                res.json(new ResponseSuccess("创建分类成功", result))
             }
         })
     },
@@ -29,9 +29,9 @@ module.exports = {
         var params = pid ? {pid: pid} : {pid: null}
         CategoryDb.find(params, function (err, result) {
             if (err || result == null){
-                res.json(new ResponseResult(0, "查询分类失败"))
+                res.json(new ResponseError("查询分类失败"))
             }else {
-                res.json(new ResponseResult(1, "查询分类成功", result))
+                res.json(new ResponseSuccess("查询分类成功", result))
             }
         })
     },
@@ -39,9 +39,9 @@ module.exports = {
     addProduct: function (req, res) {
         ProductDb.create(req.body, function (err, result) {
             if (err || result == null){
-                res.json(new ResponseResult(0, "创建商品失败"))
+                res.json(new ResponseError("创建商品失败"))
             }else {
-                res.json(new ResponseResult(1, "创建商品成功", result))
+                res.json(new ResponseSuccess("创建商品成功", result))
             }
         })
     },
@@ -49,9 +49,9 @@ module.exports = {
     editProduct: function (req, res) {
         ProductDb.update({_id: req.body._id}, {$set: req.body}, function (err, result) {
             if (err || result == null || result.n == 0){
-                res.json(new ResponseResult(0, err ? err.message : "修改商品失败"))
+                res.json(new ResponseError(err ? err.message : "修改商品失败"))
             }else {
-                res.json(new ResponseResult(1, "修改商品成功"))
+                res.json(new ResponseSuccess("修改商品成功"))
             }
         })
     },
@@ -59,9 +59,9 @@ module.exports = {
     removeProduct: function (req, res) {
         ProductDb.remove({_id: req.body._id}, function (err, result) {
             if (err || result == null || result.result.n == 0){
-                res.json(new ResponseResult(0, err ? err.message: "删除商品失败"))
+                res.json(new ResponseError(err ? err.message: "删除商品失败"))
             }else {
-                res.json(new ResponseResult(1, "删除商品成功"))
+                res.json(new ResponseSuccess("删除商品成功"))
             }
         })
     },
@@ -75,9 +75,9 @@ module.exports = {
         console.log(params)
         DBHelper.pageQuery(page, pagesize, ProductDb, '', params, {}, function (err, result) {
             if (err || result == null){
-                res.json(new ResponseResult(0, err ? err.message : "查询商品失败"))
+                res.json(new ResponseError(err ? err.message : "查询商品失败"))
             }else {
-                res.json(new ResponseResult(1, "查询商品成功", result))
+                res.json(new ResponseSuccess("查询商品成功", result))
             }
         })
     }

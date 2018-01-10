@@ -1,7 +1,7 @@
 var FileDb = require('../../db/mongo/index').File
 var storage = require('../../common/filestorage')
 
-var ResponseResult = require('../model/response.result')
+var {ResponseSuccess, ResponseError} = require('../model/response.result')
 
 module.exports = {
     init: function (app, auth) {
@@ -38,18 +38,18 @@ module.exports = {
             }
             FileDb.create(file, function (err, result) {
                 if (err){
-                    res.status(400).json(new ResponseResult(0, '文件上传失败', err.message))
+                    res.status(400).json(new ResponseError('文件上传失败', err.message))
                 }else {
                     console.log(result)
                     if (result == null){
-                        res.status(400).json(new ResponseResult(0, '文件上传失败'))
+                        res.status(400).json(new ResponseError('文件上传失败'))
                     }else {
-                        res.json(new ResponseResult(1, '文件上传成功', {file: result}))
+                        res.json(new ResponseSuccess('文件上传成功', {file: result}))
                     }
                 }
             })
         }else {
-            res.status(400).json(new ResponseResult(0, '文件上传失败'))
+            res.status(400).json(new ResponseError('文件上传失败'))
         }
     }
 }

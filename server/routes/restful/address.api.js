@@ -1,4 +1,4 @@
-var ResponseResult = require('../model/response.result')
+var {ResponseSuccess, ResponseError} = require('../model/response.result')
 var AddressDb = require('../../db/mongo/index').Address
 var logger = require('../../common/logger')
 
@@ -20,10 +20,10 @@ module.exports = {
             } else {
                 console.log(result)
                 if (result == null) {
-                    res.json(new ResponseResult(0, '添加地址失败'))
+                    res.json(new ResponseError('添加地址失败'))
                 }
                 else {
-                    res.json(new ResponseResult(1, '添加地址成功'))
+                    res.json(new ResponseSuccess('添加地址成功'))
                 }
             }
         })
@@ -35,13 +35,13 @@ module.exports = {
         AddressDb.remove(props, function (err, result) {
             if (err) {
                 logger.error(err)
-                res.json(new ResponseResult(0, '删除地址失败'))
+                res.json(new ResponseError('删除地址失败'))
             }
             else {
                 if (result.result.n == 0){
-                    res.json(new ResponseResult(0, '删除地址失败'))
+                    res.json(new ResponseError('删除地址失败'))
                 }else {
-                    res.json(new ResponseResult(1, '删除地址成功'))
+                    res.json(new ResponseSuccess('删除地址成功'))
                 }
             }
         })
@@ -51,9 +51,9 @@ module.exports = {
         var userId = req.user._doc._id;
         AddressDb.update({userid: userId}, req.props, function (err, result) {
             if (result != null && result.nModified == 1) {
-                res.json(new ResponseResult(1, "修改地址成功"));
+                res.json(new ResponseSuccess("修改地址成功"));
             } else {
-                res.json(new ResponseResult(0, '修改地址失败'));
+                res.json(new ResponseError('修改地址失败'));
             }
         })
     },
@@ -62,9 +62,9 @@ module.exports = {
         var userId = req.user._doc._id;
         AddressDb.find({userid: userId}, function (err, result) {
             if (result != null) {
-                res.json(new ResponseResult(1, "获取地址成功", result));
+                res.json(new ResponseSuccess("获取地址成功", result));
             } else {
-                res.json(new ResponseResult(0, '获取地址失败'));
+                res.json(new ResponseError('获取地址失败'));
             }
         })
     }

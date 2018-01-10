@@ -2,7 +2,7 @@
 * 账号相关接口
 * */
 
-var ResponseResult = require('../model/response.result')
+var {ResponseSuccess, ResponseError} = require('../model/response.result')
 var config = require('../config/token.config')
 const jwt = require('jsonwebtoken');
 var logger = require('../../common/logger')
@@ -35,9 +35,9 @@ module.exports = {
         AccountDb.editAccountInfo(userid, {sex: sex}, function (err, result) {
             console.log(result)
             if (err || result == null || result.n == 0) {
-                res.json(new ResponseResult(0, err ? err.message : "修改性别成功"))
+                res.json(new ResponseError(err ? err.message : "修改性别失败"))
             } else {
-                res.json(new ResponseResult(1, "修改性别成功"))
+                res.json(new ResponseSuccess("修改性别成功"))
             }
         })
     },
@@ -48,9 +48,9 @@ module.exports = {
         AccountDb.editAccountInfo(userid, {nickname : nickname}, function (err, result) {
             console.log(result)
             if (err || result == null || result.n == 0) {
-                res.json(new ResponseResult(0, err ? err.message : "修改昵称失败"))
+                res.json(new ResponseError(err ? err.message : "修改昵称失败"))
             } else {
-                res.json(new ResponseResult(1, "修改昵称成功"))
+                res.json(new ResponseSuccess("修改昵称成功"))
             }
         })
     },
@@ -60,9 +60,9 @@ module.exports = {
         var avatar_url = "/Api/File/downloadPicture?avatar_id=" + req.body.avatar_id
         AccountDb.editAccountInfo(userid, {avatar_url : avatar_url}, function (err, result) {
             if (err || result == null) {
-                res.json(new ResponseResult(0, err ? err.message : "修改头像失败"))
+                res.json(new ResponseError(err ? err.message : "修改头像失败"))
             } else {
-                res.json(new ResponseResult(1, "修改头像成功"))
+                res.json(new ResponseSuccess("修改头像成功"))
             }
         })
     },
@@ -71,18 +71,18 @@ module.exports = {
         var userid = req.user._doc._id
         AccountDb.getAccountInfo(userid, function (err, result) {
             if (err || result == null) {
-                res.json(new ResponseResult(0, err ? err.message : "获取用户信息失败"))
+                res.json(new ResponseError(err ? err.message : "获取用户信息失败"))
             } else {
-                res.json(new ResponseResult(1, "获取用户信息成功", result))
+                res.json(new ResponseSuccess("获取用户信息成功", result))
             }
         })
     },
 
     login: function (req, res) {
         if (req.user.username) {
-            res.json(new ResponseResult(1, "登录成功"))
+            res.json(new ResponseSuccess("登录成功"))
         } else {
-            res.json(new ResponseResult(0, "登录失败"))
+            res.json(new ResponseError("登录失败"))
         }
     },
 
@@ -93,7 +93,7 @@ module.exports = {
                 if (result == null || result == undefined) {
                     resolve()
                 } else {
-                    res.json(new ResponseResult(0, '账号已存在，不可重复创建'))
+                    res.json(new ResponseError('账号已存在，不可重复创建'))
                 }
             })
         }).then(function () {
@@ -101,14 +101,14 @@ module.exports = {
             UserDb.create(data, function (err, result) {
                 if (err) {
                     logger.error(err)
-                    res.json(new ResponseResult(0, '注册失败'))
+                    res.json(new ResponseError('注册失败'))
                 } else {
                     if (result == null) {
-                        res.json(new ResponseResult(0, '注册失败'))
+                        res.json(new ResponseError('注册失败'))
                     } else {
                         // 创建账号信息
                         AccountDb.create({'userid': result._id})
-                        res.json(new ResponseResult(1, '注册成功', {
+                        res.json(new ResponseSuccess('注册成功', {
                             token: 'Bearer ' + token,
                             name: data.username
                         }))
@@ -124,12 +124,12 @@ module.exports = {
             UserDb.getUserByLoginName(props.username, function (err, result) {
                 if (err || result == null) {
                     logger.trace('用户名不存在 : ' + props.username)
-                    res.json(new ResponseResult(0, '用户名不存在'));
+                    res.json(new ResponseError(0, '用户名不存在'));
                 } else {
                     if (result.pwd == props.pwd) {
                         resolve(result)
                     } else {
-                        res.json(new ResponseResult(0, '密码错误'));
+                        res.json(new ResponseError(0, '密码错误'));
                     }
                 }
             })
@@ -138,12 +138,12 @@ module.exports = {
             var token = createToken(username)
             UserDb.updateToken(username, token, function (err, result) {
                 if (result != null && result.nModified == 1) {
-                    res.json(new ResponseResult(1, "认证成功", {
+                    res.json(new ResponseSuccess(1, "认证成功", {
                         token: 'Bearer ' + token,
                         name: username
                     }));
                 } else {
-                    res.json(new ResponseResult(0, '认证失败,用户不存在!'));
+                    res.json(new ResponseError('认证失败,用户不存在!'));
                 }
             })
         })

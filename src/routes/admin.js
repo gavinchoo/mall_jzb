@@ -2,6 +2,7 @@ import React from 'react'
 import {Route, Switch} from 'react-router-dom'
 import Login from '../containers/admin/login'
 import Home from '../containers/admin/home'
+import '../containers/stylesheets/index.less'
 
 export default class App extends React.Component {
     previousLocation = this.props.location

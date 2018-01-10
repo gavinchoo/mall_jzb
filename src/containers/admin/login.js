@@ -22,20 +22,16 @@ class Login extends Component {
                 password: this.password.value
             },
             success: (result) => {
-                if (result.status == 100) {
-                    this.setState({
-                        logined: true
-                    })
-                } else {
-                    this.setState({
-                        checkPass: false
-                    })
-                    message.error('用户名或密码不正确');
-                }
+                this.setState({
+                    logined: true
+                })
             },
             error: (errormsg) => {
+                this.setState({
+                    checkPass: false
+                })
                 console.log(errormsg)
-                message.error('服务器错误！');
+                message.error(errormsg.message);
             }
         })
     }
