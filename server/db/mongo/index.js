@@ -1,33 +1,40 @@
 var mongoose = require('mongoose');
-var DB_URL = 'mongodb://localhost:27017/mall_jzb';
+var config = require('../../constant/config');
+var logger = require('../../common/logger')
 
-mongoose.connect(DB_URL);
+mongoose.connect(config.db);
 /**
  * 连接成功
  */
 mongoose.connection.on('connected', function () {
-    console.log('Mongoose connection open to ' + DB_URL);
+    logger.info('Mongoose connection open to ' + config.db);
 });
 
 /**
  * 连接异常
  */
-mongoose.connection.on('error',function (err) {
-    console.log('Mongoose connection error: ' + err);
+mongoose.connection.on('error', function (err) {
+    logger.info('Mongoose connection error: ' + err);
 });
 
 /**
  * 连接断开
  */
 mongoose.connection.on('disconnected', function () {
-    console.log('Mongoose connection disconnected');
+    logger.info('Mongoose connection disconnected');
 });
 
-require('./schema/user')
-require('./schema/address')
-require('./schema/order')
+exports.User = mongoose.model('User', require('./schema/user/user'));
+exports.Account = mongoose.model('Account', require('./schema/user/account'));
+exports.Order = mongoose.model('Order', require('./schema/user/order'))
+exports.Address = mongoose.model('Address', require('./schema/address/address'))
+exports.Province = mongoose.model('Province', require('./schema/address/province'))
+exports.City = mongoose.model('City', require('./schema/address/city'))
+exports.Area = mongoose.model('Area', require('./schema/address/area'))
+exports.File = mongoose.model('File', require('./schema/file'))
 
-exports.User = mongoose.model('User');
-exports.Order = mongoose.model('Order')
-exports.Address = mongoose.model('Address')
-
+/**
+ * 商品
+ */
+exports.Category = mongoose.model('Category', require('./schema/product/category'))
+exports.Product = mongoose.model('Product', require('./schema/product/product'))

@@ -2,7 +2,6 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var morgan = require('morgan');
-var fs = require('fs')
 var FileStreamRotator = require('file-stream-rotator')
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -12,6 +11,8 @@ var compression = require('compression')
 // 索引页面，管理后台、用户页面
 var index = require('./server/routes/index');
 var api = require('./server/routes/api');
+var config = require('./server/constant/config')
+var { mkdirsSync } = require('./server/common/fileutils')
 
 var app = express();
 
@@ -23,7 +24,7 @@ app.use(compression());
 // uncomment after placing your favicon in /public
 app.use(favicon(__dirname + '/src/containers/images/favicon.png'))
 app.use(morgan(function (tokens, req, res) {
-    console.log(req.body)
+    console.log("request params --> " + JSON.stringify(req.body))
     return [
         tokens.method(req, res),
         tokens.url(req, res),
@@ -33,13 +34,18 @@ app.use(morgan(function (tokens, req, res) {
     ].join(' ')
 }));
 
-var logDirectory = path.join(__dirname, 'log')
+var apilogDir = path.join(__dirname, config.apilog_dir)
+var serverlogDir = path.join(__dirname, config.serverlog_dir)
+var uploadDir = path.join(__dirname, config.upload_dir)
 // ensure log directory exists
-fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory)
+mkdirsSync(apilogDir)
+mkdirsSync(serverlogDir)
+mkdirsSync(uploadDir)
+
 // create a rotating write stream
 var accessLogStream = FileStreamRotator.getStream({
     date_format: 'YYYYMMDD',
-    filename: path.join(logDirectory, 'access-%DATE%.log'),
+    filename: path.join(serverlogDir, 'access-%DATE%.log'),
     frequency: 'daily',
     verbose: false
 })

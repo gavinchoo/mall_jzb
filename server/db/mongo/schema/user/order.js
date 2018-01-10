@@ -1,7 +1,7 @@
 var mongoose = require('mongoose')
 
 var Schema = mongoose.Schema
-var AddressSchema = new Schema({
+var OrderSchema = new Schema({
     userid: String,
     realname: String,
     is_default: String,
@@ -13,4 +13,5 @@ var AddressSchema = new Schema({
     area_id: String,
     area: String,
 })
-mongoose.model('Address', AddressSchema)
+
+module.exports = OrderSchema
