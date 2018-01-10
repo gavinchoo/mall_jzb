@@ -1,19 +1,19 @@
-## 利用openssl生成证书文件
-#### 生成私钥key文件
+### 利用openssl生成证书文件
+###### 生成私钥key文件
 openssl genrsa 1024 > private/private.pem
 
-#### 通过私钥文件生成CSR证书签名
+###### 通过私钥文件生成CSR证书签名
 openssl req -new -key private/private.pem -out private/csr.pem
 
-#### 通过私钥文件和CSR证书签名生成证书文件
+###### 通过私钥文件和CSR证书签名生成证书文件
 openssl x509 -req -days 365 -in private/csr.pem -signkey private/private.pem -out private/file.crt
 
-## 修改启动文件www
-#### 安装spdy
+### 修改启动文件www
+##### 安装spdy
 ~~~
 npm i spdy --save
 ~~~
-#### 配置Https 证书端口号
+##### 配置Https 证书端口号
 ~~~javascript
 var https = require('spdy');
 var privateKey  = fs.readFileSync(path.join(__dirname, './private/private.pem'), 'utf8');
