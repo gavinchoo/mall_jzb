@@ -11,7 +11,6 @@ describe('mall-api-test', () => {
           .send(body)
           .expect(200)
           .end(function (req, res) {
-              console.log(res.text)
               if (res.body.code == 0) {
                   api.post('/Api/User/Register')
                     .send(body)

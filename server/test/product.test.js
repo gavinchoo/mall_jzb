@@ -9,7 +9,6 @@ describe('mall-api-test', () => {
           .send(category)
           .expect(200)
           .end(function (err, res) {
-              console.log(res.text)
               assert.ifError(err)
               done()
           })
