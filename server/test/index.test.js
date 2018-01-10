@@ -51,5 +51,15 @@ describe('mall-api-test', () => {
               assert.ifError(err)
               done()
           })
+    }),
+
+    it.only('uploadFile', (done) => {
+        api.post('/Api/File/uploadPicture')
+          .attach('file', 'app.js')
+          .expect(200)
+          .end(function (req, res) {
+              console.log(res.text)
+              done()
+          })
     })
 })

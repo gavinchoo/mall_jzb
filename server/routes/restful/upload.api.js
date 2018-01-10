@@ -1,11 +1,11 @@
 var FileDb = require('../../db/mongo/index').File
-var upload = require('../../common/fileuploads')
+var storage = require('../../common/filestorage')
 
 var ResponseResult = require('../model/response.result')
 
 module.exports = {
     init: function (app, auth) {
-        app.post('/File/uploadPicture', auth, upload, this.uploadPicture)
+        app.post('/File/uploadPicture', storage, this.uploadPicture)
         app.get('/File/downloadPicture', this.downloadPicture)
     },
 
@@ -33,7 +33,9 @@ module.exports = {
             file['filename'] = fileInfo.filename
             file['mimetype'] = fileInfo.mimetype
             file['size'] =  fileInfo.size
-            file['userid'] = req.user._doc._id
+            if (req.user && req.user._doc){
+                file['userid'] = req.user._doc._id
+            }
             FileDb.create(file, function (err, result) {
                 if (err){
                     res.status(400).json(new ResponseResult(0, '文件上传失败', err.message))

@@ -1,10 +1,9 @@
 var multer = require('multer')
-var path = require('path')
 var config = require('../constant/config')
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, "../../" + config.upload_dir))
+        cb(null, config.uploadDir)
     },
     filename: function (req, file, cb) {
         cb(null, file.fieldname + '-' + Date.now())
@@ -13,5 +12,4 @@ var storage = multer.diskStorage({
 var multer = multer({ storage: storage })
 var upload = multer.single('file')
 
-//导出对象
-module.exports = upload;
+module.exports = upload

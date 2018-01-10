@@ -11,9 +11,9 @@ log4js.configure({
         },
         cheese: {
             type: 'dateFile',
-            filename: pathLib.join(__dirname, '../../' + config.apilog_dir),
+            filename: config.apilogDir,
             alwaysIncludePattern: true,
-            pattern: "/yyyyMMddhh.log",
+            pattern: "/yyyyMMdd.log",
         }
     },
     categories: {

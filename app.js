@@ -12,7 +12,7 @@ var compression = require('compression')
 var index = require('./server/routes/index');
 var api = require('./server/routes/api');
 var config = require('./server/constant/config')
-var { mkdirsSync } = require('./server/common/fileutils')
+var logger = require('./server/common/logger')
 
 var app = express();
 
@@ -34,18 +34,12 @@ app.use(morgan(function (tokens, req, res) {
     ].join(' ')
 }));
 
-var apilogDir = path.join(__dirname, config.apilog_dir)
-var serverlogDir = path.join(__dirname, config.serverlog_dir)
-var uploadDir = path.join(__dirname, config.upload_dir)
-// ensure log directory exists
-mkdirsSync(apilogDir)
-mkdirsSync(serverlogDir)
-mkdirsSync(uploadDir)
+config.initCaptureDir()
 
 // create a rotating write stream
 var accessLogStream = FileStreamRotator.getStream({
     date_format: 'YYYYMMDD',
-    filename: path.join(serverlogDir, 'access-%DATE%.log'),
+    filename: path.join(config.serverlogDir, 'access-%DATE%.log'),
     frequency: 'daily',
     verbose: false
 })
@@ -77,6 +71,10 @@ app.use(function (req, res, next) {
 // error handler
 app.use(function (err, req, res, next) {
     // set locals, only providing error in development
+    if (err){
+        logger.error(err)
+    }
+    
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
 
@@ -84,12 +82,16 @@ app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     if (err.status == 404){
         if (req.method == "POST"){
-            res.json({code: 404, message:"请求接口错误"})
+            res.json({code: 404, message:"访问的接口不存在"})
         }else {
             res.render('common/view/404')
         }
     }else {
-        res.render('common/view/error');
+        if (req.method == "POST"){
+            res.json({code: 500, message: err ? err.message : "服务器错误"})
+        }else {
+            res.render('common/view/error');
+        }
     }
 });
 

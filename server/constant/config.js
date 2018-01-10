@@ -1,10 +1,18 @@
+var path = require('path')
+var { mkdirsSync } = require('../common/fileutils')
 
 var config = {
     debug: true,
     db: 'mongodb://localhost:27017/mall_jzb',
-    apilog_dir: 'logs/apilog',
-    serverlog_dir: 'logs/serverlog',
-    upload_dir: 'uploads'
+    apilogDir: path.join(__dirname, '../../capture/logs/apilog'),
+    serverlogDir: path.join(__dirname, '../../capture/logs/serverlog'),
+    uploadDir: path.join(__dirname, '../../capture/uploads'),
+    initCaptureDir: function () {
+        // ensure log directory exists
+        mkdirsSync(this.apilogDir)
+        mkdirsSync(this.serverlogDir)
+        mkdirsSync(this.uploadDir)
+    }
 }
 
 module.exports = config
