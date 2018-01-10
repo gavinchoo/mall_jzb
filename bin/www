@@ -11,8 +11,8 @@ var https = require('https');
 var path = require('path')
 var fs = require('fs')
 
-var privateKey  = fs.readFileSync(path.join(__dirname, '../private/private.pem'), 'utf8');
-var certificate = fs.readFileSync(path.join(__dirname, '../private/file.crt'), 'utf8');
+var privateKey  = fs.readFileSync(path.join(__dirname, './private/private.pem'), 'utf8');
+var certificate = fs.readFileSync(path.join(__dirname, './private/file.crt'), 'utf8');
 var credentials = {key: privateKey, cert: certificate};
 
 /**
