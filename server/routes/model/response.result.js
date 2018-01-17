@@ -6,8 +6,9 @@ function ResponseSuccess(message, data) {
     this.message = message
 }
 
-function ResponseError(message) {
+function ResponseError(message, data) {
     this.code = HttpState.REQ_FAILED
+    this.data = data
     this.message = message
 }
 

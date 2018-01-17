@@ -33,16 +33,12 @@ module.exports = {
         var props = req.body
         props['userid'] = req.user._doc._id
         AddressDb.remove(props, function (err, result) {
-            if (err) {
+            if (err || result.result.n == 0) {
                 logger.error(err)
                 res.json(new ResponseError('删除地址失败'))
             }
             else {
-                if (result.result.n == 0){
-                    res.json(new ResponseError('删除地址失败'))
-                }else {
-                    res.json(new ResponseSuccess('删除地址成功'))
-                }
+                res.json(new ResponseSuccess('删除地址成功'))
             }
         })
     },

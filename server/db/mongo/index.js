@@ -26,7 +26,6 @@ mongoose.connection.on('disconnected', function () {
 
 exports.User = mongoose.model('User', require('./schema/user/user'));
 exports.Account = mongoose.model('Account', require('./schema/user/account'));
-exports.Order = mongoose.model('Order', require('./schema/user/order'))
 exports.Address = mongoose.model('Address', require('./schema/address/address'))
 exports.Province = mongoose.model('Province', require('./schema/address/province'))
 exports.City = mongoose.model('City', require('./schema/address/city'))
@@ -38,3 +37,10 @@ exports.File = mongoose.model('File', require('./schema/file'))
  */
 exports.Category = mongoose.model('Category', require('./schema/product/category'))
 exports.Product = mongoose.model('Product', require('./schema/product/product'))
+exports.OptionPrices = mongoose.model('OptionPrices', require('./schema/product/optionprice'))
+exports.Options = mongoose.model('Options', require('./schema/product/options'))
+
+/**
+ * 订单
+ */
+exports.Order = mongoose.model('Order', require('./schema/order/order'))
