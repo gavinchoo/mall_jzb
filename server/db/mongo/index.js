@@ -49,3 +49,8 @@ exports.Cart = mongoose.model('Cart', require('./schema/cart/cart'))
  * 订单
  */
 exports.Order = mongoose.model('Order', require('./schema/order/order'))
+
+/**
+ * 我的店铺
+ */
+exports.Shop = mongoose.model('Shop', require('./schema/shop/shop'))

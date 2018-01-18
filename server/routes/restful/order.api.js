@@ -1,6 +1,6 @@
 var {handleResponse, OperateType} = require('../model/hander.response')
 var {ResponseSuccess, ResponseError} = require('../model/response.result')
-var {OrderStatus} = require('../model/order.status')
+var {OrderStatus, getStatusByCode} = require('../model/order.status')
 
 var OrderDb = require('../../db/mongo/index').Order
 var CartDb = require('../../db/mongo/index').Cart
@@ -31,7 +31,8 @@ module.exports = {
     init: function (app, auth) {
         app.post('/Order/addOrder', auth, this.addOrder)
         app.post('/Order/getMyOrders', auth, this.getMyOrders)
-        app.post('/Order/cancelOrder', auth, this.cancelOrder)
+        app.post('/Order/delOrder', auth, this.delOrder)
+        app.post('/Order/editOrderStatus', auth, this.editOrderStatus)
     },
 
     addOrder: function (req, res) {
@@ -56,9 +57,19 @@ module.exports = {
         })
     },
 
-    cancelOrder: function (req, res) {
+    delOrder: function (req, res) {
         OrderDb.remove({_id: req.body.order_id}, function (err, result) {
             handleResponse(OperateType.Query, res, err, result)
+        })
+    },
+
+    editOrderStatus: function (req, res) {
+        var status = getStatusByCode(req.body.status)
+        var params = {}
+        params.buyer_status = status.Code;
+        params.buyer_status_text = status.Desc;
+        OrderDb.update({_id: req.body.order_id}, {$set: params}, function (err, result) {
+            handleResponse(OperateType.Update, res, err, result)
         })
     }
 }
