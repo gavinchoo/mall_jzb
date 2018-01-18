@@ -10,8 +10,7 @@ module.exports = {
         app.post('/Options/queryOptions', this.queryOptions)
         app.post('/Options/updateOptions', this.updateOptions)
         app.post('/Options/removeOptions', this.removeOptions)
-
-
+        
         app.post('/Options/addProductOption', this.addProductOption)
         app.post('/Options/addProductOptionPrices', this.addProductOptionPrices)
         app.post('/Options/queryProductOptionPrices', this.queryProductOptionPrices)

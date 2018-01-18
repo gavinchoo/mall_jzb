@@ -37,8 +37,13 @@ exports.File = mongoose.model('File', require('./schema/file'))
  */
 exports.Category = mongoose.model('Category', require('./schema/product/category'))
 exports.Product = mongoose.model('Product', require('./schema/product/product'))
-exports.OptionPrices = mongoose.model('OptionPrices', require('./schema/product/optionprice'))
 exports.Options = mongoose.model('Options', require('./schema/product/options'))
+exports.OptionPrices = mongoose.model('OptionPrices', require('./schema/product/optionprice'))
+
+/**
+ * 购物车
+ */
+exports.Cart = mongoose.model('Cart', require('./schema/cart/cart'))
 
 /**
  * 订单

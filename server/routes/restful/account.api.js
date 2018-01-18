@@ -1,7 +1,7 @@
 /*
 * 账号相关接口
 * */
-
+var {handleResponse, OperateType} = require('../model/hander.response')
 var {ResponseSuccess, ResponseError} = require('../model/response.result')
 var config = require('../config/token.config')
 const jwt = require('jsonwebtoken');
@@ -33,48 +33,30 @@ module.exports = {
         var userid = req.user._doc._id
         var sex = req.body.sex
         AccountDb.editAccountInfo(userid, {sex: sex}, function (err, result) {
-            console.log(result)
-            if (err || result == null || result.n == 0) {
-                res.json(new ResponseError(err ? err.message : "修改性别失败"))
-            } else {
-                res.json(new ResponseSuccess("修改性别成功"))
-            }
+            handleResponse(OperateType.Update, res, err, result)
         })
     },
 
     editNickname: function (req, res) {
         var userid = req.user._doc._id
         var nickname = req.body.nickname
-        AccountDb.editAccountInfo(userid, {nickname : nickname}, function (err, result) {
-            console.log(result)
-            if (err || result == null || result.n == 0) {
-                res.json(new ResponseError(err ? err.message : "修改昵称失败"))
-            } else {
-                res.json(new ResponseSuccess("修改昵称成功"))
-            }
+        AccountDb.editAccountInfo(userid, {nickname: nickname}, function (err, result) {
+            handleResponse(OperateType.Update, res, err, result)
         })
     },
 
     editAvatar: function (req, res) {
         var userid = req.user._doc._id
         var avatar_url = "/Api/File/downloadPicture?avatar_id=" + req.body.avatar_id
-        AccountDb.editAccountInfo(userid, {avatar_url : avatar_url}, function (err, result) {
-            if (err || result == null) {
-                res.json(new ResponseError(err ? err.message : "修改头像失败"))
-            } else {
-                res.json(new ResponseSuccess("修改头像成功"))
-            }
+        AccountDb.editAccountInfo(userid, {avatar_url: avatar_url}, function (err, result) {
+            handleResponse(OperateType.Update, res, err, result)
         })
     },
 
     accountInfo: function (req, res) {
         var userid = req.user._doc._id
         AccountDb.getAccountInfo(userid, function (err, result) {
-            if (err || result == null) {
-                res.json(new ResponseError(err ? err.message : "获取用户信息失败"))
-            } else {
-                res.json(new ResponseSuccess("获取用户信息成功", result))
-            }
+            handleResponse(OperateType.Query, res, err, result)
         })
     },
 
@@ -124,12 +106,12 @@ module.exports = {
             UserDb.getUserByLoginName(props.username, function (err, result) {
                 if (err || result == null) {
                     logger.trace('用户名不存在 : ' + props.username)
-                    res.json(new ResponseError(0, '用户名不存在'));
+                    res.json(new ResponseError('用户名不存在'));
                 } else {
                     if (result.pwd == props.pwd) {
                         resolve(result)
                     } else {
-                        res.json(new ResponseError(0, '密码错误'));
+                        res.json(new ResponseError('密码错误'));
                     }
                 }
             })
@@ -138,7 +120,7 @@ module.exports = {
             var token = createToken(username)
             UserDb.updateToken(username, token, function (err, result) {
                 if (result != null && result.nModified == 1) {
-                    res.json(new ResponseSuccess(1, "认证成功", {
+                    res.json(new ResponseSuccess("认证成功", {
                         token: 'Bearer ' + token,
                         name: username
                     }));
