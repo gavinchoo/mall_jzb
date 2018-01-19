@@ -1,5 +1,5 @@
 var {ResponseSuccess, ResponseError} = require('../../common/http/response.result')
-var DBHelper = require('../../db/mongo/utils/dbhelper')
+var DBHelper = require('../../common/util/dbhelper')
 
 var CategoryDb = require('../../db/mongo/index').Category
 var ProductDb = require('../../db/mongo/index').Product

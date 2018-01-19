@@ -39,7 +39,11 @@ exports.Address = mongoose.model('Address', require('./schema/address/address'))
 exports.Province = mongoose.model('Province', require('./schema/address/province'))
 exports.City = mongoose.model('City', require('./schema/address/city'))
 exports.Area = mongoose.model('Area', require('./schema/address/area'))
-exports.File = mongoose.model('File', require('./schema/file'))
+
+/**
+ * 文档
+ */
+exports.File = mongoose.model('File', require('./schema/file/file'))
 
 /**
  * 商品

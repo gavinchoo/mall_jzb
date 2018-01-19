@@ -1,5 +1,5 @@
 var mongoose = require('mongoose')
-var FileSchema = require('../file')
+var FileSchema = require('../file/file')
 
 var Schema = mongoose.Schema
 var ProductSchema = new Schema({
