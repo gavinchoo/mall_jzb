@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var config = require('../../constant/config');
-var logger = require('../../common/logger')
+var logger = require('../../common/util/logger')
 
 mongoose.connect(config.db);
 /**

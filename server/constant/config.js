@@ -1,5 +1,5 @@
 var path = require('path')
-var { mkdirsSync } = require('../common/fileutils')
+var { mkdirsSync } = require('../common/util/fileutils')
 
 var config = {
     debug: true,

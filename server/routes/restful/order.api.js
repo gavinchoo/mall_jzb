@@ -1,5 +1,5 @@
-var {handleResponse, OperateType} = require('../model/hander.response')
-var {ResponseSuccess, ResponseError} = require('../model/response.result')
+var {handleResponse, OperateType} = require('../../common/http/hander.response')
+var {ResponseSuccess, ResponseError} = require('../../common/http/response.result')
 var {OrderStatus} = require('../model/order.status')
 
 var OrderDb = require('../../db/mongo/index').Order

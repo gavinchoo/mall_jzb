@@ -1,7 +1,7 @@
 /*
 * 验证码相关接口
 * */
-var {ResponseSuccess, ResponseError} = require('../model/response.result')
+var {ResponseSuccess, ResponseError} = require('../../common/http/response.result')
 var UserDb = require('../../db/mongo/index').User
 
 module.exports = {

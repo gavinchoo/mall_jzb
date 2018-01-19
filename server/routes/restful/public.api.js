@@ -1,4 +1,4 @@
-var {ResponseSuccess, ResponseError} = require('../model/response.result')
+var {ResponseSuccess, ResponseError} = require('../../common/http/response.result')
 var ProvinceDb = require('../../db/mongo/index').Province
 var CityDb = require('../../db/mongo/index').City
 var AreaDb = require('../../db/mongo/index').Area

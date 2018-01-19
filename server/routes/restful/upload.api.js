@@ -1,7 +1,7 @@
 var FileDb = require('../../db/mongo/index').File
 var storage = require('../../common/filestorage')
 
-var {ResponseSuccess, ResponseError} = require('../model/response.result')
+var {ResponseSuccess, ResponseError} = require('../../common/http/response.result')
 
 module.exports = {
     init: function (app, auth) {

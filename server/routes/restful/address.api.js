@@ -1,6 +1,6 @@
-var {ResponseSuccess, ResponseError} = require('../model/response.result')
+var {ResponseSuccess, ResponseError} = require('../../common/http/response.result')
 var AddressDb = require('../../db/mongo/index').Address
-var logger = require('../../common/logger')
+var logger = require('../../common/util/logger')
 
 module.exports = {
     init: function (app, auth) {

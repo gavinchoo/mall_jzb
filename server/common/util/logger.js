@@ -1,4 +1,4 @@
-var config = require('../constant/config');
+var config = require('../../constant/config');
 var pathLib = require('path')
 
 var env = process.env.NODE_ENV || "development"

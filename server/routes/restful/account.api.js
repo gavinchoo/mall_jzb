@@ -1,11 +1,11 @@
 /*
 * 账号相关接口
 * */
-var {handleResponse, OperateType} = require('../model/hander.response')
-var {ResponseSuccess, ResponseError} = require('../model/response.result')
+var {handleResponse, OperateType} = require('../../common/http/hander.response')
+var {ResponseSuccess, ResponseError} = require('../../common/http/response.result')
 var config = require('../config/token.config')
 const jwt = require('jsonwebtoken');
-var logger = require('../../common/logger')
+var logger = require('../../common/util/logger')
 
 
 var UserDb = require('../../db/mongo/index').User

@@ -1,4 +1,4 @@
-var {ResponseSuccess, ResponseError} = require('../model/response.result')
+var {ResponseSuccess, ResponseError} = require('../../common/http/response.result')
 var DBHelper = require('../../db/mongo/utils/dbhelper')
 
 var CategoryDb = require('../../db/mongo/index').Category

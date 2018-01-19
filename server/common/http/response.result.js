@@ -1,4 +1,4 @@
-var HttpState = require('../../constant/httpstate')
+var HttpState = require('./http.state')
 
 function ResponseSuccess(message, data) {
     this.code = HttpState.REQ_SUCCESS

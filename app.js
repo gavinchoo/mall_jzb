@@ -12,7 +12,7 @@ var compression = require('compression')
 var index = require('./server/routes/index');
 var api = require('./server/routes/api');
 var config = require('./server/constant/config')
-var logger = require('./server/common/logger')
+var logger = require('./server/common/util/logger')
 
 var app = express();
 
