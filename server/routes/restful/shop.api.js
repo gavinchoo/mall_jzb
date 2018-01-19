@@ -30,10 +30,10 @@ module.exports = {
 
     editShop: function (req, res) {
         if (req.body.headpic) {
-            req.body.headpic = "/Api/File/downloadPicture?headpic=" + req.body.headpic
+            req.body.headpic = "/Api/File/downloadPicture?avatar_id=" + req.body.headpic
         }
         if (req.body.signpic) {
-            req.body.signpic = "/Api/File/downloadPicture?signpic=" + req.body.signpic
+            req.body.signpic = "/Api/File/downloadPicture?avatar_id=" + req.body.signpic
         }
         req.body.update_time = Date.now()
         ShopDb.update({_id: req.body.shop_id}, {$set: req.body}, function (err, result) {

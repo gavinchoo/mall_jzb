@@ -24,8 +24,17 @@ mongoose.connection.on('disconnected', function () {
     logger.info('Mongoose connection disconnected');
 });
 
+/**
+ * 用户
+ */
 exports.User = mongoose.model('User', require('./schema/user/user'));
 exports.Account = mongoose.model('Account', require('./schema/user/account'));
+exports.Wallet = mongoose.model('Wallet', require('./schema/pay/wallet'));
+exports.WalletRecord = mongoose.model('WalletRecord', require('./schema/pay/walletrecord'));
+
+/**
+ * 地址
+ */
 exports.Address = mongoose.model('Address', require('./schema/address/address'))
 exports.Province = mongoose.model('Province', require('./schema/address/province'))
 exports.City = mongoose.model('City', require('./schema/address/city'))

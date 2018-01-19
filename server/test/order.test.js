@@ -1,7 +1,7 @@
 const supertest = require('supertest')
 const assert = require('power-assert')
 
-describe('mall-api-test', () => {
+describe('mall-api-test-order', () => {
     const api = supertest('http://localhost:8000')
 
     var token = "";
@@ -64,7 +64,7 @@ describe('mall-api-test', () => {
     it('editOrderStatus', (done) => {
         api.post('/Api/Order/editOrderStatus')
           .set("Authorization", token)
-          .send({order_id: "5a6034140fd05e09ec4221e5", status: "1"})
+          .send({order_id: "5a61440ba6125605ac83d179", status: "Delivery"})
           .expect(200)
           .end(function (err, res) {
               console.log(res.text)

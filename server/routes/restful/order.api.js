@@ -1,6 +1,6 @@
 var {handleResponse, OperateType} = require('../model/hander.response')
 var {ResponseSuccess, ResponseError} = require('../model/response.result')
-var {OrderStatus, getStatusByCode} = require('../model/order.status')
+var {OrderStatus} = require('../model/order.status')
 
 var OrderDb = require('../../db/mongo/index').Order
 var CartDb = require('../../db/mongo/index').Cart
@@ -14,10 +14,10 @@ var cartToOrder = function (result, userId, address) {
             shop_id: item.shop_id,
             shop_title: item.shop_title,
             im_account: "",
-            buyer_status: OrderStatus.PAY.Code,
-            buyer_status_text: OrderStatus.PAY.Desc,
-            seller_status: OrderStatus.PAY.Code,
-            seller_status_text: OrderStatus.PAY.Desc,
+            buyer_status: OrderStatus.Pay.Code,
+            buyer_status_text: OrderStatus.Pay.Desc,
+            seller_status: OrderStatus.Pay.Code,
+            seller_status_text: OrderStatus.Pay.Desc,
             total_price: item.total_price,
             address: address,
             products: item.products,
@@ -64,10 +64,12 @@ module.exports = {
     },
 
     editOrderStatus: function (req, res) {
-        var status = getStatusByCode(req.body.status)
+        var status = req.body.status
         var params = {}
-        params.buyer_status = status.Code;
-        params.buyer_status_text = status.Desc;
+        params.buyer_status = OrderStatus[status].Code;
+        params.buyer_status_text = OrderStatus[status].Desc;
+        params.seller_status = OrderStatus[status].Code;
+        params.seller_status_text = OrderStatus[status].Desc;
         OrderDb.update({_id: req.body.order_id}, {$set: params}, function (err, result) {
             handleResponse(OperateType.Update, res, err, result)
         })

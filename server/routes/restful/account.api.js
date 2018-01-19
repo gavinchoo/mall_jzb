@@ -10,6 +10,8 @@ var logger = require('../../common/logger')
 
 var UserDb = require('../../db/mongo/index').User
 var AccountDb = require('../../db/mongo/index').Account
+var WalletDb = require('../../db/mongo/index').Wallet
+var WalletRecordDb = require('../../db/mongo/index').WalletRecord
 
 function createToken(username) {
     var token = jwt.sign({name: username}, config.secret, {
@@ -27,6 +29,26 @@ module.exports = {
         app.post('/User/modifyAvatar', auth, this.editAvatar)
         app.post('/User/editSex', auth, this.editSex)
         app.post('/User/editNickname', auth, this.editNickname)
+        app.post('/User/myWallet', auth, this.myWallet)
+        app.post('/User/myWalletRecord', auth, this.myWalletRecord)
+    },
+
+    myWallet: function (req, res) {
+        var userid = req.user._doc._id
+        WalletDb.findOne({user_id: userid}, function (err, result) {
+            handleResponse(OperateType.Query, res, err, result)
+        })
+    },
+
+    myWalletRecord: function (req, res) {
+        var params = {}
+        params.user_id = req.user._doc._id
+        if (req.body.status) {
+            params.status = req.body.status;
+        }
+        WalletRecordDb.find(params, function (err, result) {
+            handleResponse(OperateType.Query, res, err, result)
+        })
     },
 
     editSex: function (req, res) {
