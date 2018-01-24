@@ -4,8 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CompressionPlugin = require("compression-webpack-plugin")
 var HappyPack = require('happypack');
 var HappyThreadPool = HappyPack.ThreadPool({size: os.cpus().length});
-const bundleConfig = require("./json/bundle-config.json");
-const {entryConfig} = require("./entry.config")
+const bundleConfig = require("../json/bundle-config.json");
+const {entryConfig} = require("../../src/entries/entry.config")
 
 var htmlPlugins = []
 
@@ -41,7 +41,7 @@ htmlPlugins.push(new HtmlWebpackPlugin({
 module.exports = [
     new webpack.DllReferencePlugin({
         context: __dirname,
-        manifest: require('./json/vendor-manifest.json')
+        manifest: require('../json/vendor-manifest.json')
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.DefinePlugin({

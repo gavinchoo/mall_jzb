@@ -3,10 +3,10 @@ var webpack = require('webpack')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 
-const pluginConfig = require("../plugins.config")
-const moduleConfig = require("../module.config")
-const outputConfig = require('../output.config')
-var { allEntry } = require("../entry.config")
+const pluginConfig = require("../config/plugins.config")
+const moduleConfig = require("../config/module.config")
+const outputConfig = require('../config/output.config')
+var { allEntry } = require("../../src/entries/entry.config")
 const allEntryConfig = allEntry()
 
 module.exports = {

@@ -57,7 +57,7 @@ export function request(route, params, props, success = null, error = null, {met
           } else if (result.code === 401) {
               message.warn('登录认证已过期，请从新登录')
               error && error(result)
-              props.history.push('/admin')
+              props.history.push('/login')
           } else {
               // dispatch({ type: TYPES.REQUEST_ERROR, ...data })
               error && error(result)

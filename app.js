@@ -17,7 +17,7 @@ var logger = require('./server/common/util/logger')
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'public/build'));
+app.set('views', path.join(__dirname, 'public/dist'));
 app.set('view engine', 'ejs');
 
 app.use(compression());

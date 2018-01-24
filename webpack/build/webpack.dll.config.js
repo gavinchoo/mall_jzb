@@ -6,15 +6,15 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const AssetsPlugin = require('assets-webpack-plugin');
 var HappyPack = require('happypack');
 var HappyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
-const moduleConfig = require("../module.config")
+const moduleConfig = require("../config/module.config")
 
 module.exports = {
     entry: {
         vendor: ['react', 'react-dom', 'react-router-dom', 'moment'],
     },
     output: {
-        path: path.join(__dirname, '../../public/build/dll'), // 打包后文件输出的位置
-        publicPath: '/build/dll/',
+        path: path.join(__dirname, '../../public/dist/dll'), // 打包后文件输出的位置
+        publicPath: '/dist/dll/',
         filename: '[name].bundle.js',
         library: '[name]_library'
         // vendor.dll.js中暴露出的全局变量名。

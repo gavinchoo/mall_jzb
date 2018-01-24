@@ -28,8 +28,8 @@ export default class App extends React.Component {
         return (
           <div>
               <Switch location={isModal ? this.previousLocation : location}>
-                  <Route exact path="/" component={Login}/>
-                  <Route path="/home" component={Home}/>
+                  <Route exact path="/login" component={Login}/>
+                  <Route path="/" component={Home}/>
                   <Route component={NoMatch}/>
               </Switch>
           </div>

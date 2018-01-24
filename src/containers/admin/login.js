@@ -19,7 +19,7 @@ class Login extends Component {
             props: this.props,
             body: {
                 username: this.username.value,
-                password: this.password.value
+                pwd: this.password.value
             },
             success: (result) => {
                 this.setState({
@@ -39,7 +39,7 @@ class Login extends Component {
     render() {
         if (this.state.logined) {
             return (
-              <Redirect to="/home"/>
+              <Redirect to="/"/>
             )
         }
         return (

@@ -1,14 +1,14 @@
 var webpack = require('webpack')
 
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const moduleConfig = require("../module.config")
-const pluginConfig = require("../plugins.config")
-const outputConfig = require('../output.config')
-var { allEntry } = require("../entry.config")
+const moduleConfig = require("../config/module.config")
+const pluginConfig = require("../config/plugins.config")
+const outputConfig = require('../config/output.config')
+var { allEntry } = require("../../src/entries/entry.config")
 var allEntryConfig = allEntry()
 
 module.exports = {
-    devtool: 'eval', // eval source-map
+    devtool: 'source-map', // eval source-map
     entry: allEntryConfig,
     output: outputConfig,
     module: moduleConfig,

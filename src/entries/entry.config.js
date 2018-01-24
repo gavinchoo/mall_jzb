@@ -1,3 +1,6 @@
+/**
+ *  路径需配置全路径
+ */
 const entryConfig = {
     web: {
         'web/admin': './src/entries/web/admin',
