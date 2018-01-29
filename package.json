@@ -51,7 +51,10 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^4.0.8",
+    "react-slick": "^0.16.0",
+    "react-svg": "^2.2.10",
     "serve-favicon": "~2.4.5",
+    "slick-carousel": "^1.8.1",
     "spdy": "^3.4.7",
     "validator": "^9.2.0"
   },
@@ -103,6 +106,11 @@
     "webpack": "^3.8.1",
     "webpack-bundle-analyzer": "^2.9.1",
     "webpack-dev-server": "^2.9.4"
+  },
+  "theme": {
+    "hd": "2px",
+    "brand-primary": "red",
+    "color-text-base": "#333"
   },
   "jest": {
     "moduleFileExtensions": [

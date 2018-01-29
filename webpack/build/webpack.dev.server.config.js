@@ -2,7 +2,7 @@ var webpack = require('webpack')
 const moduleConfig = require("../config/module.config")
 const pluginConfig = require("../config/plugins.config")
 const outputConfig = require('../config/output.config')
-var { allEntry } = require("../../src/entries/entry.config")
+var { allEntry } = require("../../src/entries/index")
 var allEntryConfig = allEntry()
 
 module.exports = {

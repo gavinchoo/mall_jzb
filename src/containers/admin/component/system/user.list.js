@@ -1,7 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 import {Pagination} from 'antd'
-import {getAllUser, delUser} from "../../../actions/user";
+import {getAllUser, delUser} from "../../../../actions/api/user";
 
 class UserItem extends React.Component {
     constructor(...args) {

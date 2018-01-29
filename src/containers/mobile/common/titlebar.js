@@ -18,7 +18,7 @@ export default class TitleBar extends React.Component {
           <NavBar mode='dark'
                   onLeftClick={this.props.onLeftClick == undefined ? this.onClickBack : this.props.onLeftClick}
                   style={{height: 55}}
-                  icon={<Icon
-                    type={this.props.type == undefined ? "left" : this.props.type}/>}>{this.props.title}</NavBar>)
+                  icon={<Icon type={this.props.type == undefined ? "left" : this.props.type}/>}>{this.props.title}
+          </NavBar>)
     }
 }

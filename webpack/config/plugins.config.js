@@ -5,7 +5,8 @@ const CompressionPlugin = require("compression-webpack-plugin")
 var HappyPack = require('happypack');
 var HappyThreadPool = HappyPack.ThreadPool({size: os.cpus().length});
 const bundleConfig = require("../json/bundle-config.json");
-const {entryConfig} = require("../../src/entries/entry.config")
+const {entryConfig} = require("../../src/entries/index")
+const theme = require('../../package.json').theme;
 
 var htmlPlugins = []
 
@@ -55,7 +56,7 @@ module.exports = [
     new HappyPack({
         id: 'happybabelstyles',
         threadPool: HappyThreadPool,
-        loaders: ['style-loader', 'css-loader', 'less-loader']
+        loaders: ['style-loader', 'css-loader', {loader: 'less-loader', options: {modifyVars: theme}}]
     }),
     new CompressionPlugin({
         asset: "[path].gz[query]",

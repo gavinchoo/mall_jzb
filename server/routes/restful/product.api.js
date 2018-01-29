@@ -1,4 +1,5 @@
 var {ResponseSuccess, ResponseError} = require('../../common/http/response.result')
+var {handleResponse, OperateType} = require('../../common/http/hander.response')
 var DBHelper = require('../../common/util/dbhelper')
 
 var CategoryDb = require('../../db/mongo/index').Category
@@ -15,13 +16,15 @@ module.exports = {
     },
 
     addCategory: function (req, res) {
-        CategoryDb.create(req.body, function (err, result) {
-            if (err || result == null){
-                res.json(new ResponseError("创建分类失败"))
-            }else {
-                res.json(new ResponseSuccess("创建分类成功", result))
-            }
-        })
+        if (req.body.child){
+            CategoryDb.update({pid : req.body.pid}, {$push: {child: req.body.child}}, function (err, result) {
+                handleResponse(OperateType.Update, res, err, result)
+            })
+        }else {
+            CategoryDb.create(req.body, function (err, result) {
+                handleResponse(OperateType.Add, res, err, result)
+            })
+        }
     },
 
     queryCategory: function (req, res) {

@@ -1,6 +1,6 @@
 var express = require('express')
 var router = express.Router()
-var {allEntry} = require('../../src/entries/entry.config')
+var {allEntry} = require('../../src/entries/index')
 var entryPage = allEntry()
 
 // 用户页面

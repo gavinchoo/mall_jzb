@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {addUser} from '../../../actions/user'
+import {addUser} from '../../../../actions/api/user'
 import {Input, Dropdown, Icon, Menu, Button, message} from 'antd'
 
 const roles = {

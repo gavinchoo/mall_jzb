@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 import {HashRouter as Router, Route} from 'react-router-dom'
-import Admin from '../../containers/admin/routes/admin'
+import Portal from '../../containers/itopview/portal'
 
 ReactDom.render(
   (<Router>
-        <Route component={Admin}/>
+        <Route component={Portal}/>
     </Router>
   )
   , document.getElementById('root')

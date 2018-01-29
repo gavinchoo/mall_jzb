@@ -1,9 +1,9 @@
 import fetch from 'isomorphic-fetch'
 import {message} from 'antd'
-import * as CONFIG from '../config'
+import * as CONFIG from '../../actions/constant/config'
 
-import StringUtil from '../utils/stringutil'
-import HttpState from '../actions/constant/httpstate'
+import StringUtil from './stringutil'
+import HttpState from '../../actions/constant/httpstate'
 
 export function requestPost(route, opt) {
     request(route, {}, opt.props, opt.success, opt.error,

@@ -6,7 +6,7 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const pluginConfig = require("../config/plugins.config")
 const moduleConfig = require("../config/module.config")
 const outputConfig = require('../config/output.config')
-var { allEntry } = require("../../src/entries/entry.config")
+var { allEntry } = require("../../src/entries/index")
 const allEntryConfig = allEntry()
 
 module.exports = {

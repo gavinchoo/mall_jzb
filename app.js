@@ -22,7 +22,7 @@ app.set('view engine', 'ejs');
 
 app.use(compression());
 // uncomment after placing your favicon in /public
-app.use(favicon(__dirname + '/src/containers/images/favicon.png'))
+app.use(favicon(__dirname + '/server/common/favicon/favicon.png'))
 app.use(morgan(function (tokens, req, res) {
     console.log("request params --> " + JSON.stringify(req.body))
     return [

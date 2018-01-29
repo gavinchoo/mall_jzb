@@ -1,27 +1,31 @@
 import React from 'react'
 import {Breadcrumb, Layout, Menu, Icon} from 'antd';
 import {Link, Route} from 'react-router-dom'
-import AddUser from './home/adduser'
-import User from './home/user'
+
+import CategoryManage from './category'
+import GoodsManage from './product'
+import UserManage from './system/user.list'
 
 const {Header, Content, Footer, Sider} = Layout;
 const SubMenu = Menu.SubMenu;
-import '../stylesheets/home.css'
+import '../styles/home.css'
 
 const route = {
     product: {
         title: "商品管理",
         path: "/product",
+        icon: "appstore-o",
         child: [
-            {path: "/category", title: "分类管理", component: User}
-            , {path: "/product", title: "商品管理", component: AddUser}
+            {path: "/category", title: "分类管理", component: CategoryManage},
+            {path: "/goods", title: "货品管理", component: GoodsManage}
         ]
     },
     account: {
         title: "系统管理",
         path: "/system",
+        icon: "setting",
         child: [
-            {path: "/user", title: "用户管理", component: User}
+            {path: "/user", title: "用户管理", component: UserManage},
         ]
     }
 }
@@ -37,19 +41,10 @@ export default class Home extends React.Component {
         }
     }
 
-    componentWillMount() {
-        this.requireAuth()
-    }
-
-    requireAuth() {
-        console.log('requireAuth')
-    }
-
     onCollapse = (collapsed) => {
         console.log(collapsed);
         this.setState({collapsed});
     }
-
 
     setDefaultSelect() {
         console.log("match.path", this.props.match.path)
@@ -72,7 +67,7 @@ export default class Home extends React.Component {
             var subMenuItems = []
             menuItem.child.map((subMenuItem) => {
                 breadcrumbNameMap[menuItem.path + subMenuItem.path] = subMenuItem.title
-                
+
                 var path = menuItem.path + subMenuItem.path
                 routers.push(
                   <Route path={path} component={subMenuItem.component}/>)
@@ -84,14 +79,11 @@ export default class Home extends React.Component {
 
             submenus.push(
               <SubMenu
-                key={menuItem.path.replace('/', '')}
-                title={<span><Icon type="team"/><span>{menuItem.title}</span></span>}>
+                key={menuItem.path.replace('/', '')} title={
+                    <span><Icon type={menuItem.icon}/><span>{menuItem.title}</span></span>}>
                   {subMenuItems}
               </SubMenu>)
         }
-        console.log("breadcrumbNameMap", breadcrumbNameMap)
-        console.log("submenus", submenus)
-        console.log("routers", routers)
         return {submenus, breadcrumbNameMap, routers}
     }
 

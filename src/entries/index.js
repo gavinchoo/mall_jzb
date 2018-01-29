@@ -8,6 +8,7 @@ const entryConfig = {
     mobile: {
         'mobile/portal': './src/entries/mobile/portal',
         'mobile/personal': './src/entries/mobile/personal',
+        'itopview/portal': './src/entries/itopview/portal',
     },
 }
 

@@ -1,4 +1,4 @@
-import {requestPost} from '../utils/request';
+import {requestPost} from '../../common/utils/request';
 
 export function loginValidate(opt) {
     const route = '/Api/User/Login';

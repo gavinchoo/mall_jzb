@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
 import {Icon, message} from 'antd'
-import {loginValidate, accessToken} from '../../actions/user'
+import {loginValidate, accessToken} from '../../../actions/api/user'
 
 class Login extends Component {
 
