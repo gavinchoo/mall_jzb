@@ -26,7 +26,7 @@ class ItemView extends React.Component {
             ))
         })
         return (
-          <div>
+          <div className="car_content">
               <div style={{
                   background: "lightgray",
                   height: "30px",

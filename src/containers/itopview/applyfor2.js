@@ -1,6 +1,5 @@
 import React from 'react'
 import {Button, Toast} from 'antd-mobile'
-import {Link} from 'react-router-dom'
 import 'antd-mobile/lib/button/style/css'
 import 'antd-mobile/lib/input-item/style/css'
 import 'antd-mobile/lib/toast/style/css'

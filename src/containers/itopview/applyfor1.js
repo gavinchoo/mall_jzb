@@ -1,12 +1,13 @@
 import React from 'react'
 import {Button, Toast} from 'antd-mobile'
-import {Link} from 'react-router-dom'
 import 'antd-mobile/lib/button/style/css'
 import 'antd-mobile/lib/input-item/style/css'
 import 'antd-mobile/lib/toast/style/css'
 import router from './routers'
 
 import InputItemEx from './widget/InputItemEx'
+
+import { progressData } from './mock/index'
 
 class StepOne extends React.Component {
 
@@ -16,11 +17,6 @@ class StepOne extends React.Component {
             name: "",
             phone: "",
             verify: "",
-            carInfo: {
-                brand: "凯迪拉克XT5",
-                type: "2018款 25T 豪华型",
-                money: "￥327,400.00",
-            }
         }
     }
 
@@ -90,9 +86,9 @@ class StepOne extends React.Component {
                       获取验证码
                   </div>
               </div>
-              <InputItemEx editable={false} value={this.state.carInfo.brand} title="购车品牌"/>
-              <InputItemEx editable={false} value={this.state.carInfo.type} title="意向车型"/>
-              <InputItemEx editable={false} value={this.state.carInfo.money} title="指导价"/>
+              <InputItemEx editable={false} value={progressData.carInfo.brand} title="购车品牌"/>
+              <InputItemEx editable={false} value={progressData.carInfo.type} title="意向车型"/>
+              <InputItemEx editable={false} value={progressData.carInfo.money} title="指导价"/>
 
               <Button onClick={this.handleNextStep} className='car_detail_btn' style={{"margin-top": 40}}>下一步</Button>
           </div>
@@ -119,7 +115,7 @@ export default class Portal extends React.Component {
 
     render() {
         return (
-          <div>
+          <div className="car_content">
               <StepOne handleNextStep={this.handleNextStep}/>
           </div>
         )

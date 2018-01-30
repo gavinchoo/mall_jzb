@@ -13,7 +13,7 @@ export default class InputItemEx extends React.Component {
                      clear={this.props.clear}
                      placeholder={this.props.placeholder}
                      style={{fontSize: "14px"}}>
-              <div style={{fontSize: "14px"}}>{this.props.title}</div>
+              <div style={{fontSize: "14px",color:'#555555'}}>{this.props.title}</div>
           </InputItem>
         )
     }

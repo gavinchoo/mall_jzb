@@ -1,6 +1,6 @@
 import React from 'react'
-import {Link, Route} from 'react-router-dom'
-import {Toast, Button, WingBlank} from 'antd-mobile'
+import {Link} from 'react-router-dom'
+import {Button} from 'antd-mobile'
 import 'antd-mobile/lib/button/style/css'
 import 'antd-mobile/lib/toast/style/css'
 
@@ -20,7 +20,7 @@ export default class Detail extends React.Component {
             images.push(<img style={{width: '100%'}} src={image}/>)
         })
         return (
-          <div className='car_detail'>
+          <div className='car_content'>
               <div className='car_detail_bg'>
                   {images}
               </div>

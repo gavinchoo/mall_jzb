@@ -1,7 +1,7 @@
 var webpack = require('webpack')
 
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const pluginConfig = require("../config/plugins.config")
 const moduleConfig = require("../config/module.config")
@@ -16,6 +16,7 @@ module.exports = {
     module: moduleConfig,
     plugins: [
         new UglifyJSPlugin(),
+        new BundleAnalyzerPlugin(),
         new webpack.HotModuleReplacementPlugin(),
     ].concat(pluginConfig),
 }

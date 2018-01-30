@@ -58,7 +58,7 @@ export default class Progress extends React.Component {
         }
 
         return (<div style={{display: 'flex'}}>
-            <div style={{width: '80px', textAlign: 'right', fontSize: "12px"}}>{props.title}</div>
+            <div style={{width: '70px', textAlign: 'right', fontSize: "12px", color:'gray'}}>{props.title}</div>
             <div style={{marginLeft: '20px', fontSize: "12px"}}>{value}</div>
         </div>)
     }
@@ -76,10 +76,10 @@ export default class Progress extends React.Component {
         })
 
         return (
-          <div style={{'width': "100%", 'background': 'white'}}>
+          <div className="car_content">
               <div style={{display: this.state.showSubmit}} className='car_progress_success'>
                   <div style={{'color': 'blue', 'font-size': '14px'}}>申请提交成功，请等待审核</div>
-                  <div style={{'color': 'gray', 'font-size': '10px', 'margin-top': '6px'}}>您可以到个人中心->进度查询，查看审核进度。</div>
+                  <div style={{'color': 'gray', 'font-size': '10px', 'margin-top': '6px'}}>您可以到首页->进度查询，查看办理进度。</div>
               </div>
 
               <WhiteSpace size="sm"/>

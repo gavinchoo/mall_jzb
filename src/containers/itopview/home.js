@@ -1,8 +1,10 @@
 import React from 'react'
 import {Link, Route} from 'react-router-dom'
-import {Toast, Button} from 'antd-mobile'
+import {Toast, Button, WingBlank, WhiteSpace} from 'antd-mobile'
 import 'antd-mobile/lib/button/style/css'
 import 'antd-mobile/lib/toast/style/css'
+import 'antd-mobile/lib/wing-blank/style/css'
+import 'antd-mobile/lib/white-space/style/css'
 
 import CarList from './carlist'
 import Progress from './progress'
@@ -25,11 +27,25 @@ export default class Portal extends React.Component {
         return (
           <div className="car_parent">
               <div className="car_content">
-                  <Button><Link to={router.carlist}>分期购车</Link></Button>
-                  <Button><Link to={router.progress.replace(':status', 'query')}>进度查询</Link></Button>
-                  <Button><Link to={router.repayment}>在线还款</Link></Button>
+                  <WingBlank>
+                      <div style={{display: 'flex', width: "100%"}}>
+                          <Link to={router.carlist} className="car_home_item_left">
+                              <div className="border_round" style={{background: "#1E88E5", width: "100%"}}>分期购车</div>
+                          </Link>
+                          <Link to={router.progress.replace(':status', 'query')} className="car_home_item_right">
+                              <div className="border_round" style={{background: "#259B24", width: "100%"}}>进度查询</div>
+                          </Link>
+                      </div>
+                      <div style={{display: 'flex', width: "100%"}}>
+                          <Link to={router.repayment} className="car_home_item_left">
+                              <div className="border_round" style={{background: "#FF9800", width: "100%"}}>在线还款</div>
+                          </Link>
+                          <div className="car_home_item_right" style={{background: "#FFFFFF"}}></div>
+                      </div>
+                  </WingBlank>
+
               </div>
-              <div className="car_content">
+              <div>
                   <Route path={router.carlist} component={CarList}/>
                   <Route path={router.progress} component={Progress}/>
                   <Route path={router.repayment} component={RepayMent}/>

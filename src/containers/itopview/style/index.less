@@ -10,12 +10,19 @@
 .car_content {
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 500px;
   background: white;
 }
 
+.border_round {
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+}
+
 .car_info_item {
-  margin-top: 10px;
+  background: white;
+  padding-top: 10px;
   > img {
     width: 100%;
     height: auto;
@@ -26,10 +33,6 @@
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
   }
-}
-
-.car_detail {
-  width: 100%;
 }
 
 .car_detail_bg {
@@ -62,4 +65,22 @@
   width: 100%;
   height: 10px;
   background: lightgray;
+}
+
+.car_home_item {
+  width: 50%;
+  height: 80px;
+  margin-top: 16px;
+  line-height: 80px;
+  font-size: 16px;
+  text-align: center;
+  color: white;
+}
+
+.car_home_item_left:extend(.car_home_item) {
+  margin-right: 8px;
+}
+
+.car_home_item_right:extend(.car_home_item) {
+  margin-left: 8px;
 }

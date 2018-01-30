@@ -1,5 +1,5 @@
 import React from 'react'
-import {WingBlank, SearchBar, Icon} from 'antd-mobile'
+import {WingBlank, SearchBar} from 'antd-mobile'
 import {Link} from 'react-router-dom'
 import Slider from 'react-slick'
 
@@ -36,20 +36,22 @@ export default class CarList extends React.Component {
     }
 
     componentWillMount() {
-        document.title = '我要贷款'
+        document.title = '分期购车'
     }
 
     render() {
 
         var carList = []
         var carSlider = []
-        carListData.car_list.map((item) => {
-            carList.push((<Link to="/detail"><CarInfoItem item={item}/></Link>))
+        carListData.car_slider.map((item) => {
             carSlider.push((
               <Link to="/detail">
                   <div><img style={{width: '100%', height: 140, margin: 'auto'}} src={item.image}/></div>
               </Link>)
             )
+        })
+        carListData.car_list.map((item) => {
+            carList.push((<Link to="/detail"><CarInfoItem item={item}/></Link>))
         })
         var setting = {
             arrows: false,
