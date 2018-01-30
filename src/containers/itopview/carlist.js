@@ -33,13 +33,6 @@ export default class CarList extends React.Component {
 
     constructor(props) {
         super(props)
-    }
-
-    componentWillMount() {
-        document.title = '分期购车'
-    }
-
-    render() {
 
         var carList = []
         var carSlider = []
@@ -53,14 +46,27 @@ export default class CarList extends React.Component {
         carListData.car_list.map((item) => {
             carList.push((<Link to="/detail"><CarInfoItem item={item}/></Link>))
         })
-        var setting = {
-            arrows: false,
-            accessibility: false,
-            autoplay: true,
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            autoplaySpeed: 1500,
+
+        this.state = {
+            carList: carList,
+            carSlider: carSlider,
+            setting: {
+                arrows: false,
+                accessibility: false,
+                autoplay: true,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                autoplaySpeed: 2000,
+            }
         }
+
+    }
+
+    componentWillMount() {
+        document.title = '分期购车'
+    }
+
+    render() {
         return (
           <div className='car_content'>
               <div>
@@ -69,11 +75,11 @@ export default class CarList extends React.Component {
                     onChange={this.onChange}
                   />
               </div>
-              <Slider {...setting}>
-                  {carSlider}
+              <Slider {...this.state.setting}>
+                  {this.state.carSlider}
               </Slider>
               <WingBlank>
-                  <div>{carList}</div>
+                  <div>{this.state.carList}</div>
               </WingBlank>
           </div>
         )

@@ -1,7 +1,6 @@
 import React from 'react'
-import {Card, WhiteSpace, WingBlank} from 'antd-mobile'
+import {WhiteSpace, WingBlank} from 'antd-mobile'
 import {Steps} from 'antd'
-import 'antd-mobile/lib/card/style/css'
 import 'antd-mobile/lib/toast/style/css'
 import 'antd-mobile/lib/wing-blank/style/css'
 import 'antd-mobile/lib/white-space/style/css'
@@ -45,7 +44,7 @@ export default class Progress extends React.Component {
         document.title = '办理进度'
     }
 
-    contentLine(props) {
+    contentItem(props) {
 
         var value = props.value
         if (this.state.firstStepInfo) {
@@ -58,8 +57,8 @@ export default class Progress extends React.Component {
         }
 
         return (<div style={{display: 'flex'}}>
-            <div style={{width: '70px', textAlign: 'right', fontSize: "12px", color:'gray'}}>{props.title}</div>
-            <div style={{marginLeft: '20px', fontSize: "12px"}}>{value}</div>
+            <div style={{width: '80px', textAlign: 'right', fontSize: "13px", color:'gray'}}>{props.title}</div>
+            <div style={{width: '140px', marginLeft: '20px', fontSize: "13px"}}>{value}</div>
         </div>)
     }
 
@@ -67,19 +66,19 @@ export default class Progress extends React.Component {
 
         var baseInfo = []
         progressData.base.forEach((item) => {
-            baseInfo.push(this.contentLine(item))
+            baseInfo.push(this.contentItem(item))
         })
 
         var typeInfo = []
         progressData.type.forEach((item) => {
-            typeInfo.push(this.contentLine(item))
+            typeInfo.push(this.contentItem(item))
         })
 
         return (
           <div className="car_content">
               <div style={{display: this.state.showSubmit}} className='car_progress_success'>
                   <div style={{'color': 'blue', 'font-size': '14px'}}>申请提交成功，请等待审核</div>
-                  <div style={{'color': 'gray', 'font-size': '10px', 'margin-top': '6px'}}>您可以到首页->进度查询，查看办理进度。</div>
+                  <div style={{'color': 'gray', 'font-size': '12px', 'margin-top': '6px'}}>您可以到首页->进度查询，查看办理进度。</div>
               </div>
 
               <WhiteSpace size="sm"/>
@@ -87,17 +86,13 @@ export default class Progress extends React.Component {
                   <div className="car_progress_title">
                       申请信息
                   </div>
-                  <Card>
-                      <Card.Body>
-                          {baseInfo}
-                      </Card.Body>
-                  </Card>
+                  <div className="car_progress_card">
+                      {baseInfo}
+                  </div>
                   <WhiteSpace size="sm"/>
-                  <Card>
-                      <Card.Body>
-                          {typeInfo}
-                      </Card.Body>
-                  </Card>
+                  <div className="car_progress_card">
+                      {typeInfo}
+                  </div>
 
                   <WhiteSpace/>
                   <div className="car_progress_title">

@@ -76,7 +76,7 @@ class StepOne extends React.Component {
                   <InputItemEx onChange={this.handleVerifyChange} value={this.state.verify}
                                placeholder="输入手机验证码" title="验证码"/>
                   <div onClick={this.handleGetVerify} style={{
-                      position: 'fixed',
+                      position: 'absolute',
                       right: "14px",
                       fontSize: "14px",
                       lineHeight: "45px",

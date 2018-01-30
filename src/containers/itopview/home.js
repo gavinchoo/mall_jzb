@@ -23,6 +23,10 @@ export default class Portal extends React.Component {
         document.title = '汽车金融'
     }
 
+    componentWillUpdate() {
+        document.title = '汽车金融'
+    }
+
     render() {
         return (
           <div className="car_parent">
