@@ -4,11 +4,11 @@
  */
 const entryConfig = {
     web: {
-        'web/admin': './src/entries/web/admin',
+        'web/admin': './src/clients/admin/admin',
     },
     mobile: {
-        'mobile/portal': './src/entries/mobile/portal',
-        'mobile/personal': './src/entries/mobile/personal',
+        'mobile/portal': './src/clients/mobile/portal',
+        'mobile/personal': './src/clients/mobile/personal',
         'autofinance/home': './src/clients/itopview/home',
         'autofinance/portal': './src/clients/itopview/portal',
     },
