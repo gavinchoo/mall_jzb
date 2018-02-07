@@ -1,14 +1,13 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {Button} from 'antd-mobile'
+import {connect} from 'react-redux'
 import 'antd-mobile/lib/button/style/css'
 import 'antd-mobile/lib/toast/style/css'
 
-import {detailData} from './mock/index'
-
 import router from './routers'
 
-export default class Detail extends React.Component {
+class Detail extends React.Component {
 
     componentWillMount() {
         document.title = '详情'
@@ -16,9 +15,11 @@ export default class Detail extends React.Component {
 
     render() {
         const images = []
-        detailData.images.forEach((image) => {
-            images.push(<img style={{width: '100%'}} src={image}/>)
-        })
+        if (this.props.detailData && this.props.detailData.detailImages) {
+            this.props.detailData.detailImages.forEach((image, index) => {
+                images.push(<img key={index.toString()} style={{width: '100%'}} src={image}/>)
+            })
+        }
         return (
           <div className='car_content'>
               <div className='car_detail_bg'>
@@ -33,3 +34,12 @@ export default class Detail extends React.Component {
         )
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    console.log("mapStateToProps state ", state)
+    return {
+        detailData: state.detailData,
+    }
+}
+
+export default connect(mapStateToProps)(Detail)

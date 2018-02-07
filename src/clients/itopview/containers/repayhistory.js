@@ -1,7 +1,7 @@
 import React from 'react'
 import {Icon} from 'antd'
 
-import {repayHistoryData} from './mock/index'
+import {repayHistoryData} from '../mock/index'
 
 class ItemView extends React.Component {
 

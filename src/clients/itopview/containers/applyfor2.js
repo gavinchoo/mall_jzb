@@ -4,7 +4,7 @@ import 'antd-mobile/lib/button/style/css'
 import 'antd-mobile/lib/input-item/style/css'
 import 'antd-mobile/lib/toast/style/css'
 import router from './routers'
-import InputItemEx from './widget/InputItemEx'
+import InputItemEx from '../widget/InputItemEx'
 
 export default class StepTwo extends React.Component {
 
@@ -44,7 +44,7 @@ export default class StepTwo extends React.Component {
               <InputItemEx editable={false} defaultValue="等额本息" title="还款方式"/>
               <InputItemEx editable={false} defaultValue="￥5,424.00" title="分期月供"/>
               <Button onClick={this.showToast} className='car_detail_btn'
-                      style={{"margin-top": 40}}>提交申请</Button>
+                      style={{"marginTop": 40}}>提交申请</Button>
           </div>
         )
     }

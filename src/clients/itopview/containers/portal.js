@@ -2,7 +2,7 @@ import React from 'react'
 import {Route, Switch} from 'react-router-dom'
 import Home from './home'
 
-import './style/index.less'
+import '../style/index.less'
 
 export default class App extends React.Component {
     render() {
@@ -10,7 +10,6 @@ export default class App extends React.Component {
           <div>
               <Switch >
                   <Route path="/" component={Home}/>
-
                   <Route component={NoMatch}/>
               </Switch>
           </div>

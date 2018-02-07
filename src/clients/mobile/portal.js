@@ -19,7 +19,7 @@ export default class Portal extends React.Component {
 
     render() {
         const data = Array.from(new Array(9)).map((_val, i) => ({
-            icon: require('../containers/admin/images/favicon.png'),
+            icon: require('../clients/admin/images/favicon.png'),
             text: `人员信息管理`,
             url: 'personal'
         }));

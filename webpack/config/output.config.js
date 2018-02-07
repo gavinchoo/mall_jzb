@@ -2,6 +2,6 @@ var path = require('path')
 
 module.exports = {
     path: path.join(__dirname, '../../public/dist'),
-    publicPath: '/Helps/Demos/autofinance/',
+    publicPath: '/dist/',
     filename: '[name].bundle.js'
 }

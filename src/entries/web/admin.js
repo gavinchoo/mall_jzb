@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 import {HashRouter as Router, Route} from 'react-router-dom'
-import Admin from '../../containers/admin/routes/admin'
+import Admin from '../../clients/admin/routes/admin'
 
 ReactDom.render(
   (<Router>

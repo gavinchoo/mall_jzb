@@ -1,3 +1,4 @@
+
 /**
  *  路径需配置全路径
  */
@@ -8,7 +9,7 @@ const entryConfig = {
     mobile: {
         'mobile/portal': './src/entries/mobile/portal',
         'mobile/personal': './src/entries/mobile/personal',
-        'autofinance/portal': './src/entries/itopview/portal',
+        'autofinance/portal': './src/clients/itopview/portal',
     },
 }
 

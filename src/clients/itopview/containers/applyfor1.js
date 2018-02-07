@@ -5,9 +5,9 @@ import 'antd-mobile/lib/input-item/style/css'
 import 'antd-mobile/lib/toast/style/css'
 import router from './routers'
 
-import InputItemEx from './widget/InputItemEx'
+import InputItemEx from '../widget/InputItemEx'
 
-import { progressData } from './mock/index'
+import {progressData} from '../mock/index'
 
 class StepOne extends React.Component {
 
@@ -18,35 +18,41 @@ class StepOne extends React.Component {
             phone: "",
             verify: "",
         }
+
+        this.handleGetVerify = this.handleGetVerify.bind(this)
+        this.handleVerifyChange = this.handleVerifyChange.bind(this)
+        this.handleNameChange = this.handleNameChange.bind(this)
+        this.handlePhoneChange = this.handlePhoneChange.bind(this)
+        this.handleNextStep = this.handleNextStep.bind(this)
     }
 
-    handleGetVerify = () => {
+    handleGetVerify() {
         this.setState({
             verify: "2334"
         })
     }
 
-    handleVerifyChange = (value) => {
+    handleVerifyChange(value) {
         this.setState({
             verify: value
         })
     }
 
-    handleNameChange = (value) => {
+    handleNameChange(value) {
         this.setState({
             name: value
         })
     }
 
 
-    handlePhoneChange = (value) => {
+    handlePhoneChange(value) {
         this.setState({
             phone: value
         })
     }
 
 
-    handleNextStep = () => {
+    handleNextStep() {
         if (!this.state.name || this.state.name.length == 0) {
             Toast.show("请输入姓名", 1)
             return
@@ -90,7 +96,7 @@ class StepOne extends React.Component {
               <InputItemEx editable={false} value={progressData.carInfo.type} title="意向车型"/>
               <InputItemEx editable={false} value={progressData.carInfo.money} title="指导价"/>
 
-              <Button onClick={this.handleNextStep} className='car_detail_btn' style={{"margin-top": 40}}>下一步</Button>
+              <Button onClick={this.handleNextStep} className='car_detail_btn' style={{"marginTop": 40}}>下一步</Button>
           </div>
         )
     }

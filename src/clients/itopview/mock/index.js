@@ -21,26 +21,69 @@ exports.detailData = {
 exports.carListData = {
     car_list: [{
         title: "斯巴鲁，全面购车节",
-        image: imageCar3
+        poster: imageCar3,
+        detailImages: [img1,img2, img3, img4, img5, img6],
+        carInfo: {
+            brand: "斯巴鲁-斯巴鲁XV",
+            type: "2.0i全驱精英版",
+            money: "￥327,400.00",
+        }
     }, {
         title: "全新捷豹，畅想0利尽致",
-        image: imageCar4
+        poster: imageCar4,
+        detailImages: [img1,img2, img3, img4, img5, img6],
+        carInfo: {
+            brand: "斯巴鲁-斯巴鲁XV",
+            type: "2.0i全驱精英版",
+            money: "￥327,400.00",
+        }
     }, {
         title: "雷克萨斯购车新风尚",
-        image: imageCar5
+        poster: imageCar5,
+        detailImages: [img1,img2, img3, img4, img5, img6],
+        carInfo: {
+            brand: "斯巴鲁-斯巴鲁XV",
+            type: "2.0i全驱精英版",
+            money: "￥327,400.00",
+        }
     }, {
         title: "特斯拉，开启改变世界之旅",
-        image: imageCar6
+        poster: imageCar6,
+        detailImages: [img1,img2, img3, img4, img5, img6],
+        carInfo: {
+            brand: "斯巴鲁-斯巴鲁XV",
+            type: "2.0i全驱精英版",
+            money: "￥327,400.00",
+        }
     },],
+
     car_slider: [{
         title: "凯迪拉克1",
-        image: imageCar1
+        poster: imageCar1,
+        detailImages: [img1,img2, img3, img4, img5, img6],
+        carInfo: {
+            brand: "斯巴鲁-斯巴鲁XV",
+            type: "2.0i全驱精英版",
+            money: "￥327,400.00",
+        }
     }, {
-        title: "凯迪拉克1",
-        image: imageCar3
+        title: "斯巴鲁，全面购车节",
+        poster: imageCar3,
+        detailImages: [img1,img2, img3, img4, img5, img6],
+        carInfo: {
+            brand: "斯巴鲁-斯巴鲁XV",
+            type: "2.0i全驱精英版",
+            money: "￥327,400.00",
+        }
     }, {
         title: "凯迪拉克2",
-        image: imageCar2
+        poster: imageCar2,
+        detailImages: [img1,img2, img3, img4, img5, img6],
+        carInfo: {
+            brand: "斯巴鲁-斯巴鲁XV",
+            type: "2.0i全驱精英版",
+            money: "￥327,400.00",
+        }
     }]
 }
 
@@ -90,5 +133,3 @@ exports.repayHistoryData = [
         ]
     }
 ]
-
-

@@ -9,6 +9,7 @@ var HappyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 const moduleConfig = require("../config/module.config")
 
 module.exports = {
+    devtool: 'source-map',
     entry: {
         vendor: ['react', 'react-dom', 'react-router-dom', 'moment'],
     },

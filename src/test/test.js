@@ -1,7 +1,7 @@
 const React = require('react');
 const assert = require('power-assert')
 import {shallow} from 'enzyme';
-var Home = require("../containers/admin/component/home")
+var Home = require("../clients/admin/component/home")
 
 function shallowRender(Component) {
     const renderer = TestUtils.createRenderer();

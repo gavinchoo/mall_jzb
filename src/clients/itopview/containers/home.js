@@ -32,22 +32,24 @@ export default class Portal extends React.Component {
           <div className="car_parent">
               <div className="car_content">
                   <WingBlank>
-                      <div style={{display: 'flex', width: "100%"}}>
-                          <Link to={router.carlist} className="car_home_item_left">
+                      <div style={{width: "100%"}}>
+                          <WhiteSpace/>
+                          <WhiteSpace/>
+                          <Link to={router.carlist} className="car_home_item1">
                               <div className="border_round" style={{background: "#1E88E5", width: "100%"}}>分期购车</div>
                           </Link>
-                          <Link to={router.progress.replace(':status', 'query')} className="car_home_item_right">
+                          <WhiteSpace/>
+                          <WhiteSpace/>
+                          <Link to={router.progress.replace(':status', 'query')} className="car_home_item1">
                               <div className="border_round" style={{background: "#259B24", width: "100%"}}>进度查询</div>
                           </Link>
-                      </div>
-                      <div style={{display: 'flex', width: "100%"}}>
-                          <Link to={router.repayment} className="car_home_item_left">
+                          <WhiteSpace/>
+                          <WhiteSpace/>
+                          <Link to={router.repayment} className="car_home_item1">
                               <div className="border_round" style={{background: "#FF9800", width: "100%"}}>在线还款</div>
                           </Link>
-                          <div className="car_home_item_right" style={{background: "#FFFFFF"}}></div>
                       </div>
                   </WingBlank>
-
               </div>
               <div>
                   <Route path={router.carlist} component={CarList}/>

@@ -5,7 +5,7 @@ import 'antd-mobile/lib/toast/style/css'
 import 'antd-mobile/lib/wing-blank/style/css'
 import 'antd-mobile/lib/white-space/style/css'
 import 'antd-mobile/lib/steps/style/css'
-import {progressData} from './mock/index'
+import {progressData} from '../mock/index'
 
 const Step = Steps.Step;
 
@@ -56,7 +56,7 @@ export default class Progress extends React.Component {
             }
         }
 
-        return (<div style={{display: 'flex'}}>
+        return (<div key={props.title} style={{display: 'flex'}}>
             <div style={{width: '80px', textAlign: 'right', fontSize: "13px", color:'gray'}}>{props.title}</div>
             <div style={{width: '140px', marginLeft: '20px', fontSize: "13px"}}>{value}</div>
         </div>)
@@ -77,8 +77,8 @@ export default class Progress extends React.Component {
         return (
           <div className="car_content">
               <div style={{display: this.state.showSubmit}} className='car_progress_success'>
-                  <div style={{'color': 'blue', 'font-size': '14px'}}>申请提交成功，请等待审核</div>
-                  <div style={{'color': 'gray', 'font-size': '12px', 'margin-top': '6px'}}>您可以到首页->进度查询，查看办理进度。</div>
+                  <div style={{'color': 'blue', 'fontSize': '14px'}}>申请提交成功，请等待审核</div>
+                  <div style={{'color': 'gray', 'fontSize': '12px', 'marginTop': '6px'}}>您可以到首页->进度查询，查看办理进度。</div>
               </div>
 
               <WhiteSpace size="sm"/>
