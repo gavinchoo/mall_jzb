@@ -9,6 +9,7 @@ const entryConfig = {
     mobile: {
         'mobile/portal': './src/entries/mobile/portal',
         'mobile/personal': './src/entries/mobile/personal',
+        'autofinance/home': './src/clients/itopview/home',
         'autofinance/portal': './src/clients/itopview/portal',
     },
 }

@@ -1,8 +1,5 @@
 import React from 'react'
 import {Button, Toast} from 'antd-mobile'
-import 'antd-mobile/lib/button/style/css'
-import 'antd-mobile/lib/input-item/style/css'
-import 'antd-mobile/lib/toast/style/css'
 import router from './routers'
 import InputItemEx from '../widget/InputItemEx'
 

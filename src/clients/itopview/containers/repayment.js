@@ -39,9 +39,7 @@ export default class Portal extends React.Component {
                   <div style={{display: "flex", marginTop: "10px"}}>
                       <div style={{width: "75%", textAlign: "center"}}>
                           <div className="car_repay_money_title">剩余应还</div>
-                          <div style={{fontSize: "28px", color: "white", textAlign: 'center'}}>
-                              ￥5,424.00
-                          </div>
+                          <div className="car_repay_money">￥5,424.00</div>
                       </div>
                       <div style={{}}>
                           <div className="car_repay_btn" onClick={this.handleRepay}>还款</div>
@@ -54,9 +52,9 @@ export default class Portal extends React.Component {
               <div className="car_repay_history_bg">
                   <div style={{display: 'flex'}}>
                       <div style={{textAlign: "center", marginLeft: "10px", marginTop: "5px"}}>
-                          <Icon type="bars" style={{ fontSize: 16}}/>
+                          <Icon type="bars" style={{fontSize: 16}}/>
                       </div>
-                      <div style={{width: "20%",marginLeft: "10px", marginTop: "3px"}}>未出账单</div>
+                      <div style={{width: "20%", marginLeft: "10px", marginTop: "3px"}}>未出账单</div>
                       <div style={{width: "30%", color: "#1E88E5", fontSize: "16px"}}>￥125,760.00</div>
                   </div>
               </div>
@@ -66,7 +64,7 @@ export default class Portal extends React.Component {
                   <Link to={routers.repayhistory}>
                       <div style={{display: 'flex'}}>
                           <div style={{width: "10%", textAlign: "center"}}>
-                              <Icon type="clock-circle-o" style={{ fontSize: 16}}/>
+                              <Icon type="clock-circle-o" style={{fontSize: 16}}/>
                           </div>
                           <div style={{width: "80%"}}>历史账单</div>
                           <div style={{width: "10%"}}><Icon type="right"/></div>

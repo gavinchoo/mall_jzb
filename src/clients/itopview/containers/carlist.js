@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom'
 import Slider from 'react-slick'
 import {connect} from 'react-redux'
 
-import 'antd-mobile/lib/button/style/css'
 import 'antd-mobile/lib/wing-blank/style/css'
 import 'antd-mobile/lib/search-bar/style/css'
 import 'antd-mobile/lib/icon/style/css'

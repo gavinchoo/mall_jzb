@@ -2,7 +2,12 @@ import React from 'react'
 import {Route, Switch} from 'react-router-dom'
 import Home from './home'
 
-import '../style/index.less'
+import 'antd-mobile/lib/button/style/css'
+import 'antd-mobile/lib/toast/style/css'
+import 'antd-mobile/lib/wing-blank/style/css'
+import 'antd-mobile/lib/white-space/style/css'
+import 'antd-mobile/lib/input-item/style/css'
+import '../style/index.css'
 
 import CarList from './carlist'
 import Progress from './progress'

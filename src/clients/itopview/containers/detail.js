@@ -2,8 +2,6 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import {Button} from 'antd-mobile'
 import {connect} from 'react-redux'
-import 'antd-mobile/lib/button/style/css'
-import 'antd-mobile/lib/toast/style/css'
 
 import router from './routers'
 
