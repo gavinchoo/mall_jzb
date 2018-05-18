@@ -19,7 +19,7 @@ module.exports = {
                     var params = req.body
                     params.user_id = userId
                     ShopDb.create(params, function (err, result) {
-                        handleResponse(OperateType.Add, res, err, result)
+                        handleResponse(OperateType.Create, res, err, result)
                     })
                 }
             })
@@ -37,7 +37,7 @@ module.exports = {
         }
         req.body.update_time = Date.now()
         ShopDb.update({_id: req.body.shop_id}, {$set: req.body}, function (err, result) {
-            handleResponse(OperateType.Update, res, err, result)
+            handleResponse(OperateType.Edit, res, err, result)
         })
     }
 }

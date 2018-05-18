@@ -51,7 +51,7 @@ exports.File = mongoose.model('File', require('./schema/file/file'))
 exports.Category = mongoose.model('Category', require('./schema/product/category'))
 exports.Product = mongoose.model('Product', require('./schema/product/product'))
 exports.Options = mongoose.model('Options', require('./schema/product/options'))
-exports.OptionPrices = mongoose.model('OptionPrices', require('./schema/product/optionprice'))
+exports.Optionprice = mongoose.model('OptionPrices', require('./schema/product/optionprice'))
 
 /**
  * 购物车
@@ -62,6 +62,12 @@ exports.Cart = mongoose.model('Cart', require('./schema/cart/cart'))
  * 订单
  */
 exports.Order = mongoose.model('Order', require('./schema/order/order'))
+
+/**
+ * 订单
+ */
+exports.Payrecord = mongoose.model('Payrecord', require('./schema/pay/payrecord'))
+exports.Walletrecord = mongoose.model('Walletrecord', require('./schema/pay/walletrecord'))
 
 /**
  * 我的店铺

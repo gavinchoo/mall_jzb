@@ -16,7 +16,7 @@ describe('mall-api-test', () => {
 
     it('queryCategory', (done) => {
         var pid = {pid: '5a547b9a500be440ecaa31b3'}
-        api.post('/Api/Product/queryCategory')
+        api.post('/api/v2/category/query')
           .send(pid)
           .expect(200)
           .end(function (err, res) {
@@ -28,7 +28,7 @@ describe('mall-api-test', () => {
 
     it('addProduct', (done) => {
         var params = {shop_id: "234324", title: "testProduct1"}
-        api.post('/Api/Product/addProduct')
+        api.post('/api/v1/product/create')
           .send(params)
           .expect(200)
           .end(function (err, res) {
@@ -62,9 +62,9 @@ describe('mall-api-test', () => {
           })
     })
 
-    it('queryCategory', (done) => {
-        var params = {page: 1, pagesize: 10, shop_id: "234324"}
-        api.post('/Api/Product/queryProductForPage')
+    it('queryProductForPage', (done) => {
+        var params = {page: 1, pagesize: 10, shop_id: "21321123"}
+        api.post('/api/v1/product/query?page=1&pagesize=10&shop_id=21321123')
           .send(params)
           .expect(200)
           .end(function (err, res) {

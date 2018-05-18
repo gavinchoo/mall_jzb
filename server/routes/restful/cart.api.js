@@ -24,11 +24,11 @@ module.exports = {
             } else {
                 if (result) {
                     CartDb.update(queryParams, {$addToSet: {products: {$each: req.body.products}}}, function (err, result) {
-                        handleResponse(OperateType.Update, res, err, result)
+                        handleResponse(OperateType.Edit, res, err, result)
                     })
                 } else {
                     CartDb.create(req.body, function (err, result) {
-                        handleResponse(OperateType.Add, res, err, result)
+                        handleResponse(OperateType.Create, res, err, result)
                     })
                 }
             }
@@ -50,13 +50,13 @@ module.exports = {
             "_id": req.body._id,
             "products._id": req.body.product_id
         }, {$set: params}, function (err, result) {
-            handleResponse(OperateType.Update, res, err, result)
+            handleResponse(OperateType.Edit, res, err, result)
         })
     },
 
     delCartbyId: function (req, res) {
         CartDb.remove({_id: req.body._id}, function (err, result) {
-            handleResponse(OperateType.Del, res, err, result)
+            handleResponse(OperateType.Remove, res, err, result)
         })
     },
 

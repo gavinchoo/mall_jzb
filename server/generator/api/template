@@ -1,0 +1,14 @@
+var {handleResponse, OperateType} = require('../../../common/http/hander.response')
+var DBHelper = require('../../../common/util/dbhelper')
+var {@Model}Db = require('../../../db/mongo/index').{@Model}
+var Base = require('../../base');
+Base.setModel({@Model}Db);
+
+module.exports = {
+    init: function (app, auth, apigroup) {
+        app.post(apigroup + '/{@Path}/create', Base.create);
+        app.post(apigroup + '/{@Path}/edit', auth, Base.edit);
+        app.route(apigroup + '/{@Path}/remove').all(auth, Base.remove);
+        app.route(apigroup + '/{@Path}/query').all(Base.query);
+    },
+}

@@ -2,6 +2,9 @@ var {ResponseSuccess, ResponseError} = require('./response.result')
 
 var addResponse = function (res, err, result) {
     if (err || result == null) {
+        if (err) {
+            console.log("addResponse err", err)
+        }
         res.status(err ? 400 : 200).json(new ResponseError(err ? err.message : "添加失败", result))
     } else {
         res.json(new ResponseSuccess("添加成功", result))
@@ -10,6 +13,9 @@ var addResponse = function (res, err, result) {
 
 var delResponse = function (res, err, result) {
     if (err || result.result.n == 0) {
+        if (err) {
+            console.log("delResponse err", err)
+        }
         res.status(err ? 400 : 200).json(new ResponseError(err ? err.message : '删除失败', result))
     }
     else {
@@ -19,6 +25,9 @@ var delResponse = function (res, err, result) {
 
 var updateResponse = function (res, err, result) {
     if (err || result.nModified != 1) {
+        if (err) {
+            console.log("updateResponse err", err)
+        }
         res.status(err ? 400 : 200).json(new ResponseError(err ? err.message : '修改失败', result))
     }
     else {
@@ -28,6 +37,9 @@ var updateResponse = function (res, err, result) {
 
 var queryResponse = function (res, err, result) {
     if (err || result == null) {
+        if (err) {
+            console.log("queryResponse err", err)
+        }
         res.status(err ? 400 : 200).json(new ResponseError(err ? err.message : '查询失败', result))
     }
     else {
@@ -36,18 +48,18 @@ var queryResponse = function (res, err, result) {
 }
 
 const OperateType = {
-    Add: 'add',
-    Del: 'del',
-    Update: 'update',
+    Create: 'add',
+    Remove: 'del',
+    Edit: 'update',
     Query: 'query',
 }
 
 var handleResponse = function (type, res, err, result) {
-    if (type == OperateType.Add) {
+    if (type == OperateType.Create) {
         addResponse(res, err, result)
-    } else if (type == OperateType.Del) {
+    } else if (type == OperateType.Remove) {
         delResponse(res, err, result)
-    } else if (type == OperateType.Update) {
+    } else if (type == OperateType.Edit) {
         updateResponse(res, err, result)
     } else if (type == OperateType.Query) {
         queryResponse(res, err, result)

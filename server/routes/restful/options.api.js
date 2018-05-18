@@ -19,7 +19,7 @@ module.exports = {
 
     addOptions: function (req, res) {
         OptionsDb.create(req.body, function (err, result) {
-            handleResponse(OperateType.Add, res, err, result)
+            handleResponse(OperateType.Create, res, err, result)
         })
     },
 
@@ -29,7 +29,7 @@ module.exports = {
         } : {$set: {title: req.body.title}}
         OptionsDb.update({pid: req.body.pid}, params, {runValidators: true}
           , function (err, result) {
-              handleResponse(OperateType.Update, res, err, result)
+              handleResponse(OperateType.Edit, res, err, result)
           })
     },
 
@@ -44,12 +44,12 @@ module.exports = {
         if (body.child) {
             // 删除子项
             OptionsDb.update({_id: body._id}, {$pull: {child: {title: body.child.title}}}, function (err, result) {
-                handleResponse(OperateType.Update, res, err, result)
+                handleResponse(OperateType.Edit, res, err, result)
             })
         } else {
             // 全部删除
             OptionsDb.remove({_id: body._id}, function (err, result) {
-                handleResponse(OperateType.Del, res, err, result)
+                handleResponse(OperateType.Remove, res, err, result)
             })
         }
     },
@@ -62,11 +62,11 @@ module.exports = {
                 if (result) {
                     OptionPricesDb.update({product_id: req.body.product_id},
                       {$addToSet: {option: req.body.option}}, function (err, result) {
-                          handleResponse(OperateType.Update, res, err, result)
+                          handleResponse(OperateType.Edit, res, err, result)
                       })
                 } else {
                     OptionPricesDb.create(req.body, function (err, result) {
-                        handleResponse(OperateType.Add, res, err, result)
+                        handleResponse(OperateType.Create, res, err, result)
                     })
                 }
             }
@@ -76,7 +76,7 @@ module.exports = {
     addProductOptionPrices: function (req, res) {
         OptionPricesDb.update({product_id: req.body.product_id},
           {$addToSet: {option_price: req.body.option_price}}, function (err, result) {
-              handleResponse(OperateType.Update, res, err, result)
+              handleResponse(OperateType.Edit, res, err, result)
           })
     },
 
@@ -89,7 +89,7 @@ module.exports = {
     removeProductOptionPrices: function (req, res) {
         var body = req.body
         OptionPricesDb.remove({_id: body._id}, function (err, result) {
-            handleResponse(OperateType.Del, res, err, result)
+            handleResponse(OperateType.Remove, res, err, result)
         })
     },
 }

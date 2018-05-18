@@ -1,17 +1,17 @@
 /*
 * 账号相关接口
 * */
-var {handleResponse, OperateType} = require('../../common/http/hander.response')
-var {ResponseSuccess, ResponseError} = require('../../common/http/response.result')
-var config = require('../config/token.config')
+var {handleResponse, OperateType} = require('../../../common/http/hander.response')
+var {ResponseSuccess, ResponseError} = require('../../../common/http/response.result')
+var config = require('../../config/token.config')
 const jwt = require('jsonwebtoken');
-var logger = require('../../common/util/logger')
+var logger = require('../../../common/util/logger')
 
 
-var UserDb = require('../../db/mongo/index').User
-var AccountDb = require('../../db/mongo/index').Account
-var WalletDb = require('../../db/mongo/index').Wallet
-var WalletRecordDb = require('../../db/mongo/index').WalletRecord
+var UserDb = require('../../../db/mongo/index').User
+var AccountDb = require('../../../db/mongo/index').Account
+var WalletDb = require('../../../db/mongo/index').Wallet
+var WalletRecordDb = require('../../../db/mongo/index').WalletRecord
 
 function createToken(username) {
     var token = jwt.sign({name: username}, config.secret, {
@@ -33,6 +33,19 @@ module.exports = {
         app.post(apigroup + '/User/myWalletRecord', auth, this.myWalletRecord)
     },
 
+    /**
+     *
+     * @api {post} /User/myWallet  获取钱包信息
+     * @apiName myWallet
+     * @apiGroup Account
+     * @apiVersion 1.0.0
+     * @apiDescription 获取当前登录用户钱包信息
+     *
+     * @apiSuccess {String} status 结果码
+     * @apiSuccess {String} message 消息说明
+     * @apiSuccess {JSONObject} data   JSON数据
+     * @apiPermission Auth
+     */
     myWallet: function (req, res) {
         var userid = req.user._doc._id
         WalletDb.findOne({user_id: userid}, function (err, result) {
@@ -40,6 +53,27 @@ module.exports = {
         })
     },
 
+    /**
+     *
+     * @api {post} /User/myWalletRecord  获取钱包使用记录
+     * @apiName myWalletRecord
+     * @apiGroup Account
+     * @apiVersion 1.0.0
+     * @apiDescription 获取当前登录用户获取钱包使用记录
+     * @apiParam {String} status 充值类型(可空)
+     * {
+            Recharege: {Desc: "充值", Code: "Recharege"},
+            Freeze: {Desc: "冻结", Code: "Freeze"},
+            Unfreeze: {Desc: "解冻", Code: "Unfreeze"},
+            Payment: {Desc: "支付", Code: "Payment"},
+            Income: {Desc: "收入", Code: "Income"},
+            Withdrawal: {Desc: "提现", Code: "Withdrawal"},
+        }
+     * @apiSuccess {String} status 结果码
+     * @apiSuccess {String} message 消息说明
+     * @apiSuccess {JSONObject} data   JSON数据
+     * @apiPermission Auth
+     */
     myWalletRecord: function (req, res) {
         var params = {}
         params.user_id = req.user._doc._id
@@ -51,6 +85,19 @@ module.exports = {
         })
     },
 
+    /**
+     *
+     * @api {post} /User/editSex  修改用户性别
+     * @apiName editSex
+     * @apiGroup Account
+     * @apiVersion 1.0.0
+     * @apiDescription 修改用户性别
+     * @apiParam {String} sex 性别
+     * @apiSuccess {String} status 结果码
+     * @apiSuccess {String} message 消息说明
+     * @apiSuccess {JSONObject} data   JSON数据
+     * @apiPermission Auth
+     */
     editSex: function (req, res) {
         var userid = req.user._doc._id
         var sex = req.body.sex
@@ -59,6 +106,19 @@ module.exports = {
         })
     },
 
+    /**
+     *
+     * @api {post} /User/editNickname  修改用户昵称
+     * @apiName editNickname
+     * @apiGroup Account
+     * @apiVersion 1.0.0
+     * @apiDescription 修改用户昵称
+     * @apiParam {String} nickname 新的昵称
+     * @apiSuccess {String} status 结果码
+     * @apiSuccess {String} message 消息说明
+     * @apiSuccess {JSONObject} data   JSON数据
+     * @apiPermission Auth
+     */
     editNickname: function (req, res) {
         var userid = req.user._doc._id
         var nickname = req.body.nickname
@@ -67,7 +127,19 @@ module.exports = {
         })
     },
 
-
+    /**
+     *
+     * @api {post} /User/editAvatar  修改用户头像
+     * @apiName editAvatar
+     * @apiGroup Account
+     * @apiVersion 1.0.0
+     * @apiDescription 修改用户头像
+     * @apiParam {String} avatar_id 头像文件ID
+     * @apiSuccess {String} status 结果码
+     * @apiSuccess {String} message 消息说明
+     * @apiSuccess {JSONObject} data   JSON数据
+     * @apiPermission Auth
+     */
     editAvatar: function (req, res) {
         var userid = req.user._doc._id
         var avatar_url = "/Api/File/downloadPicture?avatar_id=" + req.body.avatar_id
@@ -76,7 +148,19 @@ module.exports = {
         })
     },
 
-
+    /**
+     *
+     * @api {post} /User/accountInfo  获取账号信息
+     * @apiName accountInfo
+     * @apiGroup Account
+     * @apiVersion 1.0.0
+     * @apiDescription 获取账号信息
+     *
+     * @apiSuccess {String} status 结果码
+     * @apiSuccess {String} message 消息说明
+     * @apiSuccess {JSONObject} data   JSON数据
+     * @apiPermission Auth
+     */
     accountInfo: function (req, res) {
         var userid = req.user._doc._id
         AccountDb.getAccountInfo(userid, function (err, result) {

@@ -25,4 +25,9 @@ router.get('/personlist', function (req, res) {
     res.render('personlist', {})
 })
 
+router.get('/dist/web-mobile/index', function (req, res) {
+    res.render('web-mobile/index', {})
+})
+
+
 module.exports = router

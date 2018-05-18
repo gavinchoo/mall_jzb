@@ -45,7 +45,7 @@ module.exports = {
             } else {
                 var orders = cartToOrder(result, userId, address)
                 OrderDb.create(orders, function (err, result) {
-                    handleResponse(OperateType.Add, res, err, result)
+                    handleResponse(OperateType.Create, res, err, result)
                 })
             }
         })
@@ -59,7 +59,7 @@ module.exports = {
 
     delOrder: function (req, res) {
         OrderDb.remove({_id: req.body.order_id}, function (err, result) {
-            handleResponse(OperateType.Query, res, err, result)
+            handleResponse(OperateType.Remove, res, err, result)
         })
     },
 
@@ -71,7 +71,7 @@ module.exports = {
         params.seller_status = OrderStatus[status].Code;
         params.seller_status_text = OrderStatus[status].Desc;
         OrderDb.update({_id: req.body.order_id}, {$set: params}, function (err, result) {
-            handleResponse(OperateType.Update, res, err, result)
+            handleResponse(OperateType.Edit, res, err, result)
         })
     }
 }

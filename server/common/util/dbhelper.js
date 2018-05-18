@@ -1,6 +1,8 @@
 var async = require('async');
 
 var pageQuery = function (page, pageSize, Model, populate, queryParams, sortParams, callback) {
+    page = Number.parseInt(page);
+    pageSize = Number.parseInt(pageSize);
     var start = (page - 1) * pageSize;
     var result = {};
     async.parallel({
