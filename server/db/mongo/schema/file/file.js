@@ -2,8 +2,9 @@ var mongoose = require('mongoose')
 
 var Schema = mongoose.Schema
 var FileSchema = new Schema({
-    userid:String,
-    mimetype:String,
+    userid: String,
+    mimetype: String,
+    billid: String,
     filename: String,
     originalname: String,
     ext: String,

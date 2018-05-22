@@ -3,13 +3,13 @@ var DBHelper = require('../../../common/util/dbhelper')
 
 var CategoryDb = require('../../../db/mongo/index').Category
 var Base = require('../../base');
-Base.setModel(CategoryDb);
+var base = new Base(CategoryDb);
 
 module.exports = {
     init: function (app, auth, apigroup) {
-        app.post(apigroup + '/category/create', auth, Base.create)
-        app.post(apigroup + '/category/remove', auth, Base.remove)
-        app.post(apigroup + '/category/query', Base.query)
+        app.post(apigroup + '/category/create', auth, base.create)
+        app.post(apigroup + '/category/remove', auth, base.remove)
+        app.post(apigroup + '/category/query', base.query)
     },
 
     create: function (req, res) {

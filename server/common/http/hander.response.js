@@ -12,7 +12,7 @@ var addResponse = function (res, err, result) {
 }
 
 var delResponse = function (res, err, result) {
-    if (err || result.result.n == 0) {
+    if (err || result == null || result.result.n == 0) {
         if (err) {
             console.log("delResponse err", err)
         }
