@@ -13,5 +13,5 @@ ReactDom.render(
         </Router>
     </Provider>
   )
-  , document.getElementById('root')
+  , document.getElementById('rootpanel')
 )

@@ -1,19 +1,20 @@
 import React from 'react'
+import PageForm from '../../common/pageform'
+import {Columns, Uri} from "./map"
 
-export default class AddProduct extends React.Component {
+export default class Add extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-        }
     }
 
     componentWillMount() {
     }
 
     render() {
-        return (
-          <div style={{width:'70%', marginRight:'auto', marginLeft:'auto'}}>
 
+        return (
+          <div style={{width: '95%', marginRight: 'auto', marginLeft: 'auto'}}>
+              <PageForm columns={Columns} uri={Uri} dataSource={this.props.location.params}/>
           </div>
         )
     }

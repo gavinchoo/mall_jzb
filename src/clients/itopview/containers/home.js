@@ -1,6 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {WingBlank, WhiteSpace} from 'antd-mobile'
+import fetch from 'isomorphic-fetch'
 
 import router from './routers'
 
@@ -12,6 +13,20 @@ export default class Home extends React.Component {
 
     componentWillUpdate() {
         document.title = '汽车金融'
+    }
+
+    componentDidMount() {
+        console.log("componentDidMount")
+        mbos.eas.invokeScript({
+            name:"checkPermission",
+            param:['PsonCustomer_addNew'],
+            success:function(data){
+                mbos.ui.showInfo(data);
+            },
+            error:function(data){
+                mbos.ui.showInfo("校验权限出错！");
+            }
+        })
     }
 
     render() {

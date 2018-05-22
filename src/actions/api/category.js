@@ -9,3 +9,8 @@ export function addCategory(opt) {
     const route = '/Api/Product/addCategory';
     return requestPost(route, opt)
 }
+
+export function delCategory(opt) {
+    const route = '/Api/Product/delCategory';
+    return requestPost(route, opt)
+}

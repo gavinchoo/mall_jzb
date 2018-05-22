@@ -41,23 +41,20 @@ export function request(route, params, props, success = null, error = null, {met
     console.log(`[${method}]:${uri}`)
     fetch(uri, data)
       .then((response) => {
-          if (response.status == 200) {
-              return response.json()
-          } else {
-              return {code: response.status, message: response.message}
+          if (response.status === 401) {
+              message.warn('登录认证已过期，请从新登录')
+              error && error(result)
+              props.history.push('/login')
           }
+          return response.json();
       })
       .then((result) => {
-          console.log(result)
+          console.log("request", result)
           if (route == '/Api/User/Accesstoken') {
               sessionStorage.setItem('token', result.token)
           }
           if (result.code == HttpState.REQ_SUCCESS) {
               success && success(result)
-          } else if (result.code === 401) {
-              message.warn('登录认证已过期，请从新登录')
-              error && error(result)
-              props.history.push('/login')
           } else {
               // dispatch({ type: TYPES.REQUEST_ERROR, ...data })
               error && error(result)
