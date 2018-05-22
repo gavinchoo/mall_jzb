@@ -73,13 +73,14 @@ class PageForm extends React.Component {
                     values[key] = this.state.f7[key];
                 }
                 if (this.state.fileList) {
-                    var files = this.props.dataSource[this.state.fileFiled];
+                    var files;
+                    if (this.props.dataSource) {
+                        files = this.props.dataSource[this.state.fileFiled];
+                    }
                     if (!files) {
                         files = [];
                     }
-
                     this.state.fileList.map((item) => {
-
                         if (item.response) {
                             // 防止重复提交数据
                             var has = false;
