@@ -1,12 +1,12 @@
 var fs = require('fs')
 var path = require('path')
 var config = require('../config')
-const PATH_TEMPLATE = "./server/generator/api/template";
-const PATH_API = "/routes/restful/" + config.apiversion;
 var map = require('../map')
-const postfix = ".api.js"
-
 var util = require('../util')
+
+const PATH_TEMPLATE = path.join(__dirname, "../template/apitemplate");
+const PATH_API = config.apipath + config.apiversion;
+const postfix = ".api.js"
 
 function processApi() {
     var template = fs.readFileSync(PATH_TEMPLATE).toString();
@@ -31,20 +31,6 @@ function processApi() {
     })
 }
 
-function readSchema(rootPath, subFolder) {
-    try {
-        var list = fs.readdirSync(rootPath)
-        for (let i = 0; i < list.length; i++) {
-            var state = fs.lstatSync(rootPath + "/" + list[i]);
-            if (state.isDirectory()) {
-                readSchema(rootPath + "/" + list[i], list[i]);
-            } else {
-                schemas.push({path: rootPath + "/" + list[i], name: list[i]});
-            }
-        }
-    } catch (e) {
-        console.error(e)
-    }
+module.exports = {
+    processApi: processApi
 }
-
-processApi();
