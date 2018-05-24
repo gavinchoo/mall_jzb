@@ -4,13 +4,16 @@ var program = require('commander')
 
 program
   .version('0.0.1')
-  .option('-a, --generatorApi', 'Generator Restful API')
-  .option('-u, --generatorUi', 'Generator Antd UI')
+  .option('-a, --api', 'Generator Restful API')
+  .option('-u, --ui', 'Generator Antd UI')
+  .option('-m, --menu', 'Generator Antd Menu')
   .parse(process.argv);
-if (program.generatorApi) {
+if (program.api) {
     processApi.processApi();
-} else if (program.generatorUi) {
+} else if (program.ui) {
     processUi.processUi();
+} else if (program.menu) {
+    processUi.processMenu();
 } else {
     processApi.processApi();
     processUi.processUi();

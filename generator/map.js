@@ -17,8 +17,8 @@
  */
 const map = [
     {
-        table: "product",
-        group: "product",
+        table: {title: "货品管理", dataIndex: "product", addNew: {title:"新增货品", isMenu: true}},
+        group: {title: "商品管理", dataIndex: "product"},
         columns: [
             {title: "商店编号", dataIndex: "shop_id", type: String, required: true, listshow: true},
             {title: "产品名称", dataIndex: "title", type: String, required: true, width: 150, listshow: true},
@@ -49,8 +49,8 @@ const map = [
         ]
     },
     {
-        table: "category",
-        group: "product",
+        table: {title: "分类管理", dataIndex: "category", addNew: {title:"新增分类", isMenu: false}},
+        group: {title: "商品管理", dataIndex: "product"},
         columns: [
             {
                 title: "父级编号", dataIndex: "pid", type: String, required: false, f7: {
@@ -74,8 +74,8 @@ const map = [
         ]
     },
     {
-        table: "file",
-        group: "file",
+        table: {title: "文件列表", dataIndex: "file"},
+        group: {title: "文件管理", dataIndex: "file"},
         columns: [
             {title: "创建人", dataIndex: "userid", type: String, required: true},
             {title: "文件名", dataIndex: "filename", type: String, required: true},

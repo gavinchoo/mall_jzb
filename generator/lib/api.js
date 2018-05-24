@@ -11,8 +11,8 @@ const postfix = ".api.js"
 function processApi() {
     var template = fs.readFileSync(PATH_TEMPLATE).toString();
     map.forEach((item) => {
-        if (item.table.indexOf("child") == -1) {
-            var schemaName = item.table;
+        if (item.table.dataIndex.indexOf("child") == -1) {
+            var schemaName = item.table.dataIndex;
             var model = util.firstToUpperCase(schemaName);
             var subPath = schemaName.toLowerCase();
             var content = template.replace(/{@Model}/g, model).replace(/{@Path}/g, subPath);

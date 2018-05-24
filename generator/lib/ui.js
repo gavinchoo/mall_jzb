@@ -8,6 +8,10 @@ var config = require('../config')
 const columnTemplate = "{title: '@title', dataIndex: '@dataIndex',key: '@key', type: @type, width: @width, required: @required, f7: @f7, listshow:@listshow}"
 const uriTemplate = "query: '@query',\n    remove: '@remove',\n    edit: '@edit',\n    create: '@create'";
 
+const menuItem = "@group: {title: '@title',path: '/@path',icon: 'appstore-o',child: [@child]}";
+const menuChild = "{path: '/@path', title: '@title', component: @component, isMenu: @isMenu, editable: @editable}";
+const menuImport = "import @model from '@path'"
+
 function createColumnsContent(mapItem) {
     var columnsContent = "";
     mapItem.columns.forEach((columnItem) => {
@@ -41,6 +45,97 @@ function createUriContent(mapItem) {
     return uriContent;
 }
 
+function createMenuImport(groups) {
+    var menuImportContent = "";
+    for (let key in groups) {
+        var groupItem = groups[key];
+
+        groupItem.forEach((childItem) => {
+            var model = util.firstToUpperCase(childItem.table.dataIndex)
+            var path = "./" + childItem.group.dataIndex + "/" + childItem.table.dataIndex + "list"
+            var menuImportChild = menuImport
+              .replace(/@model/g, "List" + model)
+              .replace(/@path/g, path)
+            menuImportContent = menuImportContent + menuImportChild + "\n";
+
+            if (childItem.table.addNew) {
+                var path = "./" + childItem.group.dataIndex + "/" + childItem.table.dataIndex + "add"
+                var menuImportChild = menuImport
+                  .replace(/@model/g, "Add" + model)
+                  .replace(/@path/g, path)
+                menuImportContent = menuImportContent + menuImportChild + "\n";
+            }
+        })
+    }
+    return menuImportContent;
+}
+
+function createMenuItem(groups) {
+    var menuItemContent = "";
+    for (let key in groups) {
+        var groupItem = groups[key];
+        var menuChildContent = "";
+
+        groupItem.forEach((childItem) => {
+            var model = util.firstToUpperCase(childItem.table.dataIndex)
+            var newChild = menuChild
+              .replace(/@path/g, childItem.table.dataIndex)
+              .replace(/@title/g, childItem.table.title)
+              .replace(/@isMenu/g, true)
+              .replace(/@editable/g, childItem.table.addNew != undefined)
+              .replace(/@component/g, "List" + model)
+            menuChildContent = menuChildContent + "        " + newChild + ",\n";
+
+            if (childItem.table.addNew) {
+                var newChild = menuChild
+                  .replace(/@path/g, childItem.table.dataIndex + "_add")
+                  .replace(/@title/g, childItem.table.addNew.title)
+                  .replace(/@isMenu/g, childItem.table.addNew.isMenu)
+                  .replace(/@editable/g, false)
+                  .replace(/@component/g, "Add" + model)
+                menuChildContent = menuChildContent + "        " + newChild + ",\n";
+            }
+        })
+
+        var newMenu = menuItem
+          .replace(/@group/g, groupItem[0].group.dataIndex)
+          .replace(/@title/g, groupItem[0].group.title)
+          .replace(/@path/g, groupItem[0].group.dataIndex)
+          .replace(/@child/g, "\n" + menuChildContent)
+
+        menuItemContent = menuItemContent + "    " + newMenu + ",\n";
+    }
+    return menuItemContent;
+}
+
+function processMenu() {
+    var groups = {};
+    map.forEach((mapItem) => {
+        if (groups[mapItem.group.dataIndex] == undefined) {
+            groups[mapItem.group.dataIndex] = [mapItem];
+        } else {
+            groups[mapItem.group.dataIndex].push(mapItem);
+        }
+    })
+
+    var menuImportContent = createMenuImport(groups);
+    var menuItemContent = createMenuItem(groups);
+    var menutemplate = fs.readFileSync(path.join(__dirname, "../template/menutemplate")).toString();
+
+    var menuContent = menutemplate
+      .replace(/@route/g, menuItemContent)
+      .replace(/@import/g, menuImportContent)
+
+    console.log(menuContent)
+
+    var menuPath = path.join("./", config.uipath + "menu.js");
+
+    if (!fs.existsSync(menuPath)) {
+        fs.writeFileSync(menuPath, menuContent);
+    }
+
+}
+
 function processUi() {
     map.forEach((mapItem) => {
         // 构建数据源
@@ -48,24 +143,24 @@ function processUi() {
         var uriContent = createUriContent(mapItem);
 
         // // 创建文件目录
-        var fileRootPath = path.join("./", config.uipath + mapItem.group + "/");
+        var fileRootPath = path.join("./", config.uipath + mapItem.group.dataIndex + "/");
         if (!fs.existsSync(fileRootPath)) {
             util.mkdirsSync(fileRootPath);
         }
 
-        var mapPath = path.join("./", config.uipath + mapItem.group + "/" + mapItem.table + "map.js");
-        var addPath = path.join("./", config.uipath + mapItem.group + "/" + mapItem.table + "add.js");
-        var listPath = path.join("./", config.uipath + mapItem.group + "/" + mapItem.table + "list.js");
+        var mapPath = path.join("./", config.uipath + mapItem.group.dataIndex + "/" + mapItem.table.dataIndex + "map.js");
+        var addPath = path.join("./", config.uipath + mapItem.group.dataIndex + "/" + mapItem.table.dataIndex + "add.js");
+        var listPath = path.join("./", config.uipath + mapItem.group.dataIndex + "/" + mapItem.table.dataIndex + "list.js");
 
-        var model = util.firstToUpperCase(mapItem.table)
+        var model = util.firstToUpperCase(mapItem.table.dataIndex)
 
         // 构建页面详情、列表页面
         var addtemplate = fs.readFileSync(path.join(__dirname, "../template/addtemplate")).toString();
         var listtemplate = fs.readFileSync(path.join(__dirname, "../template/listtemplate")).toString();
         var maptemplate = fs.readFileSync(path.join(__dirname, "../template/maptemplate")).toString();
 
-        var addcontent = addtemplate.replace(/{@Title}/g, "Add" + model).replace(/{@map}/g, mapItem.table + "map");
-        var listcontent = listtemplate.replace(/{@Title}/g, "List" + model).replace(/{@map}/g, mapItem.table + "map");
+        var addcontent = addtemplate.replace(/{@Title}/g, "Add" + model).replace(/{@map}/g, mapItem.table.dataIndex + "map");
+        var listcontent = listtemplate.replace(/{@Title}/g, "List" + model).replace(/{@map}/g, mapItem.table.dataIndex + "map");
         var mapcontent = maptemplate.replace(/{@Columns}/g, columnsContent).replace(/{@Uri}/g, uriContent);
 
         // 已生成的接口需手动删除， 防止修改后被覆盖
@@ -84,5 +179,6 @@ function processUi() {
 }
 
 module.exports = {
-    processUi: processUi
+    processUi: processUi,
+    processMenu: processMenu
 }
