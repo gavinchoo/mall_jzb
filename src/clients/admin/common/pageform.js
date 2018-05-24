@@ -460,28 +460,28 @@ class PageForm extends React.Component {
 
     // 查询数据类型
     isColumnSearch = (column) => {
-        return column.f7 && column.f7.table
+        return column.f7 && column.f7.table;
     }
 
     // 附件数据类型
     isColumnAttachment = (column) => {
-        return column.f7 && column.f7.upload
+        return column.f7 && column.f7.upload;
     }
 
     // 分录数据类型
     isColumnEntity = (column) => {
-        return column.type == Array && column.f7
+        return column.type == Array && column.f7 && column.f7.upload == undefined;
     }
 
     render() {
         var formItems = this.props.columns.map((item, index) => {
             var forItem;
-            if (this.isColumnSearch(item)) {
-                forItem = this.formSearch(item);
-            } else if (this.isColumnAttachment(item)) {
+            if (this.isColumnAttachment(item)) {
                 forItem = this.formAttachment(item);
             } else if (this.isColumnEntity(item)) {
                 forItem = this.formEntity(item);
+            }else if (this.isColumnSearch(item)) {
+                forItem = this.formSearch(item);
             } else if (item.type == String) {
                 forItem = this.formInput(item);
             } else if (item.type == Date) {
