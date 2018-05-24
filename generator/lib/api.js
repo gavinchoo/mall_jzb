@@ -15,7 +15,15 @@ function processApi() {
             var schemaName = item.table.dataIndex;
             var model = util.firstToUpperCase(schemaName);
             var subPath = schemaName.toLowerCase();
-            var content = template.replace(/{@Model}/g, model).replace(/{@Path}/g, subPath);
+
+            var dbpath = config.dbpath.substring(0, config.dbpath.lastIndexOf("/"));
+            if (config.apiversion && config.apiversion.length > 0){
+                dbpath = "../" + dbpath;
+            }
+            var content = template
+              .replace(/{@Model}/g, model)
+              .replace(/{@Path}/g, subPath)
+              .replace(/{@Dbpath}/g, dbpath);
             // 创建文件目录
             var fileRootPath = path.join(__dirname, "../.." + PATH_API);
             if (!fs.existsSync(fileRootPath)) {

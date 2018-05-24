@@ -1,6 +1,6 @@
 var {handleResponse, OperateType} = require('../../../common/http/hander.response')
 var DBHelper = require('../../../common/util/dbhelper')
-var {@Model}Db = require('../../../db/mongo/index').{@Model}
+var {@Model}Db = require('../../../{@Dbpath}/index').{@Model}
 
 module.exports = {
     init: function (app, auth, apigroup) {
