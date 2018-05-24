@@ -17,5 +17,6 @@ if (program.api) {
 } else {
     processApi.processApi();
     processUi.processUi();
+    processUi.processMenu();
 }
 
