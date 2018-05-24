@@ -5,8 +5,8 @@ var {@Model}Db = require('../../../db/mongo/index').{@Model}
 module.exports = {
     init: function (app, auth, apigroup) {
         app.post(apigroup + '/{@Path}/create', this.create);
-        app.post(apigroup + '/{@Path}/edit', auth, this.edit);
-        app.route(apigroup + '/{@Path}/remove').all(auth, this.remove);
+        app.post(apigroup + '/{@Path}/edit', this.edit);
+        app.route(apigroup + '/{@Path}/remove').all(this.remove);
         app.route(apigroup + '/{@Path}/query').all(this.query);
     },
 

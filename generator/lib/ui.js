@@ -12,7 +12,7 @@ function createColumnsContent(mapItem) {
     var columnsContent = "";
     mapItem.columns.forEach((columnItem) => {
 
-        if (columnItem.type == Array && columnItem.f7) {
+        if (columnItem.f7 && columnItem.f7.table) {
             columnItem.f7.query = "/api/" + config.apiversion + "/" + columnItem.f7.table + "/query";
         }
 

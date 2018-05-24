@@ -7,10 +7,13 @@
  *  5. listshow：是否在列表页面显示。
  *  6. width：   列表项显示宽度。
  *  6. type：    数据类型，
- *               1）当为Array类型时， 会解析为查询数据源。
+ *  7  f7:       数据操作，
+ *               1）当为f7 存在table字段时， 会解析为查询数据源。
  *               此时f7:   查询数据源，{table， group, columns, show} = {表名，表分组，查询列表显示的字段，选择后显示的字段}
- *               2）当为Object 类型时， 会解析为文档附件数据。
+ *               2）当为f7 存在upload字段时， 会解析为文档附件数据。
  *               此时f7:  {upload, download} = {文件上传地址，文件下载地址}
+ *               3）当为f7 只存在columns字段时， 会解析为分录数据。
+ *               此时f7:  {columns} = {分录列表字段}
  */
 const map = [
     {
@@ -22,14 +25,14 @@ const map = [
             {
                 title: "产品类型",
                 dataIndex: "type",
-                type: Array,
+                type: Object,
                 // 1. [...] 数组说明是静态列表数据， 直接下拉选择。
                 // 2. {...} 对象类型说明是查询数据， 查询后弹框显示。
                 f7: {
                     table: "category", group: "product", columns: [
                         {title: "编号", dataIndex: "_id", key: "_id", type: String, required: true, width: 60},
                         {title: "分类名称", dataIndex: "title", key: "title", type: String, required: true, width: 60},
-                    ], show: "title"
+                    ], showFiled: "title"
                 }
                 , listshow: true
             },
@@ -37,7 +40,7 @@ const map = [
             {title: "数量", dataIndex: "quantity", type: String, width: 150, listshow: true},
             {title: "创建时间", dataIndex: "create_time", type: Date, width: 200, listshow: true},
             {
-                title: "视频",
+                title: "附件",
                 dataIndex: "movie",
                 type: Object,
                 width: 150,
@@ -49,11 +52,25 @@ const map = [
         table: "category",
         group: "product",
         columns: [
-            {title: "父级编号", dataIndex: "pid", type: String, required: true},
-            {title: "分类名称", dataIndex: "title", type: String, required: true},
-            {title: "图标", dataIndex: "image", type: String, required: true},
-            {title: "排序", dataIndex: "sort", type: String, required: true},
-            {title: "下级分类", dataIndex: "child", type: Array, required: true},
+            {
+                title: "父级编号", dataIndex: "pid", type: String, required: false, f7: {
+                table: "category", group: "product", columns: [
+                    {title: "编号", dataIndex: "_id", key: "_id", type: String, required: true, width: 60},
+                    {title: "分类名称", dataIndex: "title", key: "title", type: String, required: true, width: 60},
+                ], showFiled: "title", valueFiled: "_id"
+            }
+            },
+            {title: "分类名称", dataIndex: "title", type: String, required: true, listshow: true},
+            {title: "图标", dataIndex: "image", type: String, required: false},
+            {title: "排序", dataIndex: "sort", type: String, required: false},
+            {
+                title: "下级分类", dataIndex: "child", type: Array, required: false, f7: {
+                columns: [
+                    {title: "编号", dataIndex: "_id", key: "_id", type: String, required: true, width: 60},
+                    {title: "分类名称", dataIndex: "title", key: "title", type: String, required: true, width: 60},
+                ]
+            }
+            },
         ]
     },
     {
