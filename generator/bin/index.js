@@ -1,5 +1,6 @@
 var processApi = require('../lib/api')
 var processUi = require('../lib/ui')
+var processDb = require('../lib/db')
 var program = require('commander')
 
 program
@@ -7,6 +8,7 @@ program
   .option('-a, --api', 'Generator Restful API')
   .option('-u, --ui', 'Generator Antd UI')
   .option('-m, --menu', 'Generator Antd Menu')
+  .option('-d, --db', 'Generator DB')
   .parse(process.argv);
 if (program.api) {
     processApi.processApi();
@@ -14,6 +16,8 @@ if (program.api) {
     processUi.processUi();
 } else if (program.menu) {
     processUi.processMenu();
+} else if (program.db) {
+    processDb.processDB();
 } else {
     processApi.processApi();
     processUi.processUi();

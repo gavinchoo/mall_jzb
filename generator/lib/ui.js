@@ -126,8 +126,6 @@ function processMenu() {
       .replace(/@route/g, menuItemContent)
       .replace(/@import/g, menuImportContent)
 
-    console.log(menuContent)
-
     var menuPath = path.join("./", config.uipath + "menu.js");
 
     if (!fs.existsSync(menuPath)) {
@@ -142,16 +140,6 @@ function processUi() {
         var columnsContent = createColumnsContent(mapItem);
         var uriContent = createUriContent(mapItem);
 
-        // // 创建文件目录
-        var fileRootPath = path.join("./", config.uipath + mapItem.group.dataIndex + "/");
-        if (!fs.existsSync(fileRootPath)) {
-            util.mkdirsSync(fileRootPath);
-        }
-
-        var mapPath = path.join("./", config.uipath + mapItem.group.dataIndex + "/" + mapItem.table.dataIndex + "map.js");
-        var addPath = path.join("./", config.uipath + mapItem.group.dataIndex + "/" + mapItem.table.dataIndex + "add.js");
-        var listPath = path.join("./", config.uipath + mapItem.group.dataIndex + "/" + mapItem.table.dataIndex + "list.js");
-
         var model = util.firstToUpperCase(mapItem.table.dataIndex)
 
         // 构建页面详情、列表页面
@@ -162,6 +150,16 @@ function processUi() {
         var addcontent = addtemplate.replace(/{@Title}/g, "Add" + model).replace(/{@map}/g, mapItem.table.dataIndex + "map");
         var listcontent = listtemplate.replace(/{@Title}/g, "List" + model).replace(/{@map}/g, mapItem.table.dataIndex + "map");
         var mapcontent = maptemplate.replace(/{@Columns}/g, columnsContent).replace(/{@Uri}/g, uriContent);
+
+        // // 创建文件目录
+        var fileRootPath = path.join("./", config.uipath + mapItem.group.dataIndex + "/");
+        if (!fs.existsSync(fileRootPath)) {
+            util.mkdirsSync(fileRootPath);
+        }
+
+        var mapPath = fileRootPath + mapItem.table.dataIndex + "map.js";
+        var addPath = fileRootPath + mapItem.table.dataIndex + "add.js";
+        var listPath = fileRootPath + mapItem.table.dataIndex + "list.js";
 
         // 已生成的接口需手动删除， 防止修改后被覆盖
         if (!fs.existsSync(mapPath)) {
