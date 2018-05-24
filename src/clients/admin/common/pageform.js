@@ -2,6 +2,7 @@ import React from 'react'
 import {Modal, Table, Upload, Icon, Form, Input, Button, DatePicker, Select, TimePicker, Row, Col, message} from 'antd'
 import moment from 'moment'
 import {requestPost} from '../../../common/utils/request';
+import EditableTable from './editabletable'
 
 const Search = Input.Search;
 const FormItem = Form.Item
@@ -28,8 +29,9 @@ class PageForm extends React.Component {
             visible: false,
             totalcount: 2,
             searchData: [],
-            columns: [],
-            f7: {},
+            f7column: {},
+            f7value: {},
+            f7entity: {},
             fileList: [],  // 附件列表
             fileRemoved: [],
             fileFiled: ""  // 附件字段
@@ -37,42 +39,62 @@ class PageForm extends React.Component {
     }
 
     componentWillMount() {
-        this.initFileList();
+        this.initData();
     }
 
-    initFileList() {
+    initData() {
         if (!this.props.dataSource) {
             return;
         }
         this.props.columns.map((column, index) => {
-            if (column.type == Object && column.f7) {
+            if (this.isColumnAttachment(column)) {
                 // 获取附件参数
                 var values = this.props.dataSource[column.dataIndex];
                 if (values) {
                     var fileList = values.map((item) => {
-                        return {
-                            uid: item._id,
-                            name: item.originalname,
-                            status: 'done',
-                            url: column.f7.download + "?avatar_id=" + item._id,
-                            _id: item._id,
-                            remove: column.f7.remove,
-                        }
+                        return this.fileToUploadedObj(item, column);
                     })
                     this.setState({fileList});
                 }
+            } else if (this.isColumnSearch(column)) {
+                this.state.f7value[column.dataIndex] = this.props.dataSource[column.dataIndex];
+                this.state.f7column[column.dataIndex] = column.f7;
+            } else if (this.isColumnEntity(column)) {
+                this.state.f7entity[column.dataIndex] = this.props.dataSource[column.dataIndex];
             }
         })
+    }
+
+    fileToUploadedObj = (file, column) => {
+        return {
+            uid: file._id,
+            name: file.originalname,
+            status: 'done',
+            url: column.f7.download + "?avatar_id=" + file._id,
+            _id: file._id,
+            remove: column.f7.remove,
+        }
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                for (let key in this.state.f7) {
-                    values[key] = this.state.f7[key];
+                for (let key in this.state.f7value) {
+                    var column = this.state.f7column[key];
+                    if (column.valueFiled) {
+                        var object = this.state.f7value[key];
+                        values[key] = object[column.valueFiled];
+                    } else {
+                        values[key] = this.state.f7value[key];
+                    }
                 }
-                if (this.state.fileList) {
+
+                for (let key in this.state.f7entity) {
+                    values[key] = this.state.f7entity[key];
+                }
+
+                if (this.state.fileList && this.state.fileList.length > 0) {
                     var files;
                     if (this.props.dataSource) {
                         files = this.props.dataSource[this.state.fileFiled];
@@ -132,10 +154,9 @@ class PageForm extends React.Component {
     }
 
     onSearch = (dataIndex, f7) => {
-        this.setState({
-            columns: f7.columns,
-            curSearch: dataIndex
-        })
+        this.state.f7column[dataIndex] = f7;
+        this.state.curSearch = dataIndex;
+
         requestPost(f7.query, {
             props: this.props,
             body: {page: 1, pagesize: 0},
@@ -167,10 +188,18 @@ class PageForm extends React.Component {
         }
     }
 
+    onEntityChange = (dataIndex, entityData) => {
+        this.state.f7entity[dataIndex] = [...entityData];
+        let map = {};
+        map[dataIndex] = this.state.f7entity[dataIndex];
+        this.props.form.setFieldsValue(map);
+    }
+
     handleReset = () => {
         this.props.form.resetFields();
         this.setState({
-            f7: [],
+            f7column: {},
+            f7value: {},
             fileList: []
         })
     }
@@ -189,11 +218,11 @@ class PageForm extends React.Component {
 
     handleSearchRowSelect = (item) => {
         this.state.visible = false;
-        this.state.f7[this.state.curSearch] = item;
+        this.state.f7value[this.state.curSearch] = item;
         this.props.columns.map((column) => {
             if (this.state.curSearch == column.key) {
                 let map = {};
-                map[this.state.curSearch] = item[column.f7.show];
+                map[this.state.curSearch] = item[column.f7.showFiled];
                 this.props.form.setFieldsValue(map);
             }
         })
@@ -209,7 +238,6 @@ class PageForm extends React.Component {
     }
 
     handleAccachmentChange = ({fileList}) => {
-        console.log("handleAccachmentChange", fileList);
         this.setState({fileList});
     }
 
@@ -223,7 +251,6 @@ class PageForm extends React.Component {
                 return true;
             })
         }
-        console.log("state.fileList", this.state.fileList)
         var uploaded = this.state.fileList;
         if (uploaded) {
             this.state.fileList = uploaded.filter((item) => {
@@ -238,29 +265,19 @@ class PageForm extends React.Component {
                 }
                 return true;
             })
-
-            console.log("state.fileList", this.state.fileList)
         }
     }
 
     handleAccachmentRemove = (file) => {
-        console.log("remove file", file)
         if (file.remove) {
             this.removeUploadedFile(file);
             this.state.fileRemoved.push(file);
         } else {
             this.props.columns.map((column, index) => {
-                if (column.type == Object && column.f7) {
-                    var response = file.response.data.file;
-                    if (response) {
-                        var item = {
-                            uid: response._id,
-                            name: response.originalname,
-                            status: 'done',
-                            _id: response._id,
-                            url: column.f7.download + "?avatar_id=" + response._id,
-                            remove: column.f7.remove,
-                        }
+                if (this.isColumnAttachment(column)) {
+                    var file = file.response.data.file;
+                    if (file) {
+                        var item = this.fileToUploadedObj(file, column);
                         this.removeUploadedFile(item);
                         this.state.fileRemoved.push(item);
                     }
@@ -272,7 +289,7 @@ class PageForm extends React.Component {
     formInput = (props) => {
         const {getFieldDecorator} = this.props.form;
         return (
-          <Col span={containerSpan}>
+          <Col span={containerSpan} key={props.key + "col"}>
               <FormItem key={props.key} label={props.title}>
                   {
                       getFieldDecorator(props.dataIndex, {
@@ -292,12 +309,12 @@ class PageForm extends React.Component {
         const {getFieldDecorator} = this.props.form;
 
         var value = "";
-        if (this.state.f7[props.dataIndex]) {
-            var item = this.state.f7[props.dataIndex];
-            value = item[props.f7.show]
+        if (this.state.f7value[props.dataIndex]) {
+            var item = this.state.f7value[props.dataIndex];
+            value = item[props.f7.showFiled]
         }
         return (
-          <Col span={containerSpan}>
+          <Col span={containerSpan} key={props.key + "col"}>
               <FormItem key={props.key} label={props.title}>
                   {
                       getFieldDecorator(props.dataIndex, {
@@ -311,6 +328,30 @@ class PageForm extends React.Component {
                           placeholder={"请选择" + props.title}
                           onSearch={value => this.onSearch(props.dataIndex, props.f7)}
                           enterButton
+                        />
+                      )
+                  }
+              </FormItem>
+          </Col>)
+    }
+
+    formEntity = (props) => {
+        const {getFieldDecorator} = this.props.form;
+        return (
+          <Col span={containerSpan} key={props.key + "col"}>
+              <FormItem key={props.key} label={props.title}>
+                  {
+                      getFieldDecorator(props.dataIndex, {
+                          rules: [
+                              {required: props.required, message: "请选择" + props.title}
+                          ]
+                      })(
+                        <EditableTable scroll={{x: 800, y: 320}}
+                                       dataSource={this.state.f7entity[props.dataIndex]}
+                                       columns={props.f7.columns}
+                                       dataIndex={props.dataIndex}
+                                       onEntityChange={this.onEntityChange}
+                                       rowKey="_id"
                         />
                       )
                   }
@@ -417,29 +458,40 @@ class PageForm extends React.Component {
           </FormItem>)
     }
 
-    render() {
+    // 查询数据类型
+    isColumnSearch = (column) => {
+        return column.f7 && column.f7.table
+    }
 
+    // 附件数据类型
+    isColumnAttachment = (column) => {
+        return column.f7 && column.f7.upload
+    }
+
+    // 分录数据类型
+    isColumnEntity = (column) => {
+        return column.type == Array && column.f7
+    }
+
+    render() {
         var formItems = this.props.columns.map((item, index) => {
             var forItem;
-            if (item.type == String) {
+            if (this.isColumnSearch(item)) {
+                forItem = this.formSearch(item);
+            } else if (this.isColumnAttachment(item)) {
+                forItem = this.formAttachment(item);
+            } else if (this.isColumnEntity(item)) {
+                forItem = this.formEntity(item);
+            } else if (item.type == String) {
                 forItem = this.formInput(item);
             } else if (item.type == Date) {
                 forItem = this.formDatePicker(item);
-            } else if (item.type == Array && item.f7) {
-                if (item.f7 instanceof Array) {
-                    forItem = this.formSelect(item);
-                } else {
-                    forItem = this.formSearch(item);
-                }
-            } else if (item.type == Object) {
-                if (item.f7) {
-                    forItem = this.formAttachment(item);
-                }
             }
             return forItem;
         })
 
-        console.log(this.state.searchData)
+        const f7columns = this.state.f7column[this.state.curSearch] ?
+          this.state.f7column[this.state.curSearch].columns : [];
         return (
 
           <Form onSubmit={this.handleSubmit}>
@@ -462,7 +514,7 @@ class PageForm extends React.Component {
                              }
                          }}
                          dataSource={this.state.searchData}
-                         columns={this.state.columns}
+                         columns={f7columns}
                          rowKey="_id"
                          pagination={{
                              position: 'bottom', total: this.state.totalcount,
@@ -500,8 +552,8 @@ export default Form.create({
                 if (key == item.key) {
                     if (item.type == Date) {
                         value = moment(value);
-                    } else if (item.type == Array) {
-                        value = value[item.f7.show]
+                    } else if (item.f7 && item.f7.table) {
+                        value = value[item.f7.showFiled]
                     }
                 }
             })

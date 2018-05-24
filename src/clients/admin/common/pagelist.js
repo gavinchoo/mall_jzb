@@ -89,7 +89,6 @@ export default class PageList extends React.Component {
                 }
             } else if (item.type == Date) {
                 item.render = (text, record) => {
-                    console.log("text date", text)
                     return moment(text).format("YYYY-MM-DD HH:mm");
                 }
             }
@@ -113,7 +112,7 @@ export default class PageList extends React.Component {
         };
         return (
           <div>
-              <Table scroll={{x: 800, y: 320}}
+              <Table bordered scroll={{x: 800, y: 320}}
                      onRow={(record) => {
                          return {
                              onClick: () => {
