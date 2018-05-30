@@ -8,11 +8,12 @@
     "build-api": "node ./generator/bin -a",
     "build-ui": "node ./generator/bin -u",
     "build-menu": "node ./generator/bin -m",
+    "build-db": "node ./generator/bin -d",
     "apidoc": "apidoc -i ./server/routes/ -o ./public/apidoc/",
-    "build": "webpack --progress --config ./webpack/build/webpack.config.js",
-    "build-dev": "webpack --progress --watch --config ./webpack/build/webpack.dev.config.js",
-    "build-dev-server": "webpack-dev-server --progress --config ./webpack/build/webpack.dev.server.config.js",
-    "build-dll": "webpack --progress --config ./webpack/build/webpack.dll.config.js",
+    "build": "webpack --progress --config ./webpack/build/webpack.pro.js",
+    "build-dev": "webpack --progress --watch --config ./webpack/build/webpack.dev.js",
+    "build-dev-server": "webpack-dev-server --progress --config ./webpack/build/webpack.dev.server.js",
+    "build-dll": "webpack --progress --config ./webpack/build/webpack.dll.js",
     "test": "jest"
   },
   "dependencies": {

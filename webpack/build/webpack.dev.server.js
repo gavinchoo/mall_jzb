@@ -1,12 +1,12 @@
 var webpack = require('webpack')
-const moduleConfig = require("../config/module.config")
-const pluginConfig = require("../config/plugins.config")
-const outputConfig = require('../config/output.config')
+const moduleConfig = require("../config/loaders")
+const pluginConfig = require("../config/plugins")
+const outputConfig = require('../config/output')
 var { allEntry } = require("../../src/entries/index")
 var allEntryConfig = allEntry()
 
 module.exports = {
-    devtool: 'eval', // eval source-map
+    devtool: 'eval', // 构建快：eval 调试使用， 构建慢：source-map 生产使用
     entry: allEntryConfig,
     output: outputConfig,
     module: moduleConfig,
@@ -14,7 +14,7 @@ module.exports = {
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
     ].concat(pluginConfig),
-    devServer: {
+    devServer: {             // 设置代理解决跨域问题
         contentBase: 'dist', //默认webpack-dev-server会为根文件夹提供本地服务器，如果想为另外一个目录下的文件提供本地服务器，应该在这里设置其所在目录（本例设置到"build"目录）
         historyApiFallback: true, //在开发单页应用时非常有用，它依赖于HTML5 history API，如果设置为true，所有的跳转将指向index.html
         compress: true,   // 开启gzip压缩

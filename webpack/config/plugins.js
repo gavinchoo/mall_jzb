@@ -56,7 +56,7 @@ module.exports = [
     new HappyPack({
         id: 'happybabelstyles',
         threadPool: HappyThreadPool,
-        loaders: ['style-loader', 'css-loader', {loader: 'less-loader', options: {modifyVars: theme}}]
+        loaders: ['style-loader', 'css-loader', {loader: 'less-loader', options: {javascriptEnabled: true, modifyVars: theme}}]
     }),
     new CompressionPlugin({
         asset: "[path].gz[query]",

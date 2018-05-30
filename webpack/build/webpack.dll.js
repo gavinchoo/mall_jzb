@@ -6,10 +6,10 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const AssetsPlugin = require('assets-webpack-plugin');
 var HappyPack = require('happypack');
 var HappyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
-const moduleConfig = require("../config/module.config")
+const moduleConfig = require("../config/loaders")
 
 module.exports = {
-    devtool: 'source-map',
+    devtool: 'source-map', // 构建快：eval 调试使用， 构建慢：source-map 生产使用
     entry: {
         vendor: ['react', 'react-dom', 'react-router-dom', 'moment'],
     },

@@ -3,14 +3,14 @@ var webpack = require('webpack')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
-const pluginConfig = require("../config/plugins.config")
-const moduleConfig = require("../config/module.config")
-const outputConfig = require('../config/output.config')
+const pluginConfig = require("../config/plugins")
+const moduleConfig = require("../config/loaders")
+const outputConfig = require('../config/output')
 var { allEntry } = require("../../src/entries/index")
 const allEntryConfig = allEntry()
 
 module.exports = {
-    devtool: 'source-map', // eval source-map
+    devtool: 'source-map', // 构建快：eval 调试使用， 构建慢：source-map 生产使用
     entry: allEntryConfig,
     output: outputConfig,
     module: moduleConfig,
