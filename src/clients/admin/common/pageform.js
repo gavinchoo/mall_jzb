@@ -1,53 +1,71 @@
 import React from 'react'
-import {Modal, Table, Upload, Icon, Form, Input, Button, DatePicker, Select, TimePicker, Row, Col, message} from 'antd'
+import {
+    Modal,
+    Table,
+    Upload,
+    Icon,
+    Form,
+    Input,
+    Button,
+    Row,
+    Col,
+    message
+} from 'antd'
 import moment from 'moment'
 import {requestPost} from '../../../common/utils/request';
 import EditableTable from './editabletable'
+import FormUtil from './formutil'
+import FormBuild from './formbuild'
 
 const Search = Input.Search;
 const FormItem = Form.Item
-const Option = Select.Option;
-
-const formItemLayout = {
-    labelCol: {
-        xs: {span: 24},
-        sm: {span: 5},
-    },
-    wrapperCol: {
-        xs: {span: 24},
-        sm: {span: 12},
-    },
-};
+const formUtil = new FormUtil();
+const formBuild = new FormBuild();
 
 const containerSpan = {xs: 8, sm: 16, md: 24, lg: 32}
+
+const source = [
+    {value: "input", title: "手工输入"},
+    {value: "other_busi", title: "其他业务单元"},
+    {value: "category", title: "固定下拉列表"},
+    {value: "attachment", title: "附件"},
+    {value: "entity", title: "分录"},
+]
 
 class PageForm extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = {
-            visible: false,
-            totalcount: 2,
-            searchData: [],
-            f7column: {},
-            f7value: {},
-            f7entity: {},
-            fileList: [],  // 附件列表
-            fileRemoved: [],
-            fileFiled: ""  // 附件字段
-        }
+        this.initState();
     }
 
     componentWillMount() {
         this.initData();
     }
 
+    initState() {
+        this.state = {
+            visible: false,
+            totalcount: 0,
+            searchData: [],
+            f7column: {},
+            f7value: {},
+            f7entity: {},
+            f7select: {},
+            fileList: [],  // 附件列表
+            fileRemoved: [],
+            fileFiled: ""  // 附件字段
+        }
+    }
+
     initData() {
+
         if (!this.props.dataSource) {
+            this.initState();
             return;
         }
         this.props.columns.map((column, index) => {
-            if (this.isColumnAttachment(column)) {
+            if (formUtil.isColumnAttachment(column)) {
                 // 获取附件参数
                 var values = this.props.dataSource[column.dataIndex];
                 if (values) {
@@ -56,11 +74,51 @@ class PageForm extends React.Component {
                     })
                     this.setState({fileList});
                 }
-            } else if (this.isColumnSearch(column)) {
+            } else if (formUtil.isColumnSearch(column)) {
                 this.state.f7value[column.dataIndex] = this.props.dataSource[column.dataIndex];
                 this.state.f7column[column.dataIndex] = column.f7;
-            } else if (this.isColumnEntity(column)) {
+            } else if (formUtil.isColumnEntity(column)) {
                 this.state.f7entity[column.dataIndex] = this.props.dataSource[column.dataIndex];
+            } else if (formUtil.isColumnSelect(column) && column.f7.dataSource && column.type == Object) {
+                this.state.f7select[column.dataIndex] = column.f7.dataSource;
+            }
+        })
+    }
+
+    refreshData() {
+
+        if (!this.props.dataSource) {
+            this.initState();
+            this.setState({...this.state})
+            return;
+        }
+        this.props.columns.map((column, index) => {
+            if (formUtil.isColumnAttachment(column)) {
+                // 获取附件参数
+                var values = this.props.dataSource[column.dataIndex];
+                if (values) {
+                    var fileList = values.map((item) => {
+                        return this.fileToUploadedObj(item, column);
+                    })
+                    this.setState({fileList});
+                }
+            } else if (formUtil.isColumnSearch(column)) {
+                this.state.f7value[column.dataIndex] = this.props.dataSource[column.dataIndex];
+                this.state.f7column[column.dataIndex] = column.f7;
+                this.setState({
+                    f7value: this.state.f7value,
+                    f7column: this.state.f7column
+                })
+            } else if (formUtil.isColumnEntity(column)) {
+                this.state.f7entity[column.dataIndex] = this.props.dataSource[column.dataIndex];
+                this.setState({
+                    f7entity: this.state.f7entity,
+                })
+            } else if (formUtil.isColumnSelect(column) && column.f7.dataSource && column.type == Object) {
+                this.state.f7select[column.dataIndex] = column.f7.dataSource;
+                this.setState({
+                    f7select: this.state.f7select,
+                })
             }
         })
     }
@@ -92,6 +150,12 @@ class PageForm extends React.Component {
 
                 for (let key in this.state.f7entity) {
                     values[key] = this.state.f7entity[key];
+                }
+
+                for (let key in this.state.f7select) {
+                    values[key] = this.state.f7select[key].find((item) => {
+                        return item.value == values[key]
+                    });
                 }
 
                 if (this.state.fileList && this.state.fileList.length > 0) {
@@ -129,37 +193,56 @@ class PageForm extends React.Component {
     }
 
     onSubmit = (values) => {
-        var uri = this.props.uri.create;
-        if (this.props.dataSource && this.props.dataSource._id) {
-            uri = this.props.uri.edit;
-            values["_id"] = this.props.dataSource._id;
-        } else {
-            uri = this.props.uri.create;
-        }
 
         if (this.state.fileRemoved) {
             this.onRemoveFile(this.state.fileRemoved.pop());
         }
 
-        requestPost(uri, {
-            props: this.props,
-            body: values,
-            success: (result) => {
-                message.success('提交成功')
-            },
-            error: (err) => {
-                message.error(err ? err.message : '提交失败')
+        if (this.props.uri) {
+            var uri = this.props.uri.create;
+            if (this.props.dataSource && this.props.dataSource._id) {
+                uri = this.props.uri.edit;
+                values["_id"] = this.props.dataSource._id;
+            } else {
+                uri = this.props.uri.create;
             }
-        })
+
+            if (this.props.defaultParams) {
+                Object.assign(values, this.props.defaultParams)
+            }
+
+            requestPost(uri, {
+                props: this.props,
+                body: values,
+                success: (result) => {
+                    message.success('提交成功')
+                    if (this.props.onSubmitSuccess) {
+                        this.props.onSubmitSuccess(result.data);
+                    }
+                },
+                error: (err) => {
+                    message.error(err ? err.message : '提交失败')
+                }
+            })
+        } else {
+            if (this.props.onSubmitSuccess) {
+                this.props.onSubmitSuccess(values);
+            }
+        }
     }
 
     onSearch = (dataIndex, f7) => {
         this.state.f7column[dataIndex] = f7;
         this.state.curSearch = dataIndex;
 
+        var values = {page: 1, pagesize: 0};
+        if (this.props.defaultParams) {
+            Object.assign(values, this.props.defaultParams)
+        }
+
         requestPost(f7.query, {
             props: this.props,
-            body: {page: 1, pagesize: 0},
+            body: values,
             success: (result) => {
                 this.setState({
                     visible: true,
@@ -189,10 +272,21 @@ class PageForm extends React.Component {
     }
 
     onEntityChange = (dataIndex, entityData) => {
+        console.log("dataSource", entityData);
         this.state.f7entity[dataIndex] = [...entityData];
         let map = {};
         map[dataIndex] = this.state.f7entity[dataIndex];
         this.props.form.setFieldsValue(map);
+        if (this.props.onEntityItemChange) {
+            this.props.onEntityItemChange(dataIndex, entityData);
+        }
+    }
+
+    onEntityEdit = (dataIndex, entityData) => {
+        console.log("dataSource", entityData);
+        if (this.props.onEntityItemEdit) {
+            this.props.onEntityItemEdit(dataIndex, entityData);
+        }
     }
 
     handleReset = () => {
@@ -200,7 +294,14 @@ class PageForm extends React.Component {
         this.setState({
             f7column: {},
             f7value: {},
-            fileList: []
+            f7select: {},
+            fileList: [],
+            visible: false,
+            totalcount: 0,
+            searchData: [],
+            f7entity: {},
+            fileRemoved: [],
+            fileFiled: ""  // 附件字段
         })
     }
 
@@ -286,25 +387,6 @@ class PageForm extends React.Component {
         }
     }
 
-    formInput = (props) => {
-        const {getFieldDecorator} = this.props.form;
-        return (
-          <Col span={containerSpan} key={props.key + "col"}>
-              <FormItem key={props.key} label={props.title}>
-                  {
-                      getFieldDecorator(props.dataIndex, {
-                          rules: [
-                              {required: props.required, message: "请输入" + props.title}
-                          ]
-                      })(
-                        <Input placeholder={"请输入" + props.title}/>
-                      )
-                  }
-              </FormItem>
-          </Col>
-        )
-    }
-
     formSearch = (props) => {
         const {getFieldDecorator} = this.props.form;
 
@@ -337,8 +419,11 @@ class PageForm extends React.Component {
 
     formEntity = (props) => {
         const {getFieldDecorator} = this.props.form;
+        const columns = props.f7.columns.filter((item) => {
+            return item.listshow != false
+        })
         return (
-          <Col span={containerSpan} key={props.key + "col"}>
+          <Col span={24} key={props.key + "col"}>
               <FormItem key={props.key} label={props.title}>
                   {
                       getFieldDecorator(props.dataIndex, {
@@ -348,9 +433,10 @@ class PageForm extends React.Component {
                       })(
                         <EditableTable scroll={{x: 800, y: 320}}
                                        dataSource={this.state.f7entity[props.dataIndex]}
-                                       columns={props.f7.columns}
+                                       columns={columns}
                                        dataIndex={props.dataIndex}
                                        onEntityChange={this.onEntityChange}
+                                       onEntityEdit={this.onEntityEdit}
                                        rowKey="_id"
                         />
                       )
@@ -359,41 +445,6 @@ class PageForm extends React.Component {
           </Col>)
     }
 
-    formDatePicker = (props) => {
-        const {getFieldDecorator} = this.props.form;
-
-        return (
-          <Col span={containerSpan}>
-              <FormItem key={props.key} label={props.title}>
-                  {
-                      getFieldDecorator(props.dataIndex, {
-                          rules: [
-                              {required: props.required, message: "请选择" + props.title}
-                          ]
-                      })(
-                        <DatePicker placeholder={"请选择" + props.title}/>
-                      )
-                  }
-              </FormItem>
-          </Col>)
-    }
-
-    formTimePicker = (props) => {
-        const {getFieldDecorator} = this.props.form;
-
-        return (
-          <FormItem key={props.key} label={props.title} {...formItemLayout}>
-              {
-                  getFieldDecorator(props.dataIndex, {
-                      rules: [
-                          {required: props.required, message: "请选择" + props.title}
-                      ]
-                  })(
-                    <TimePicker placeholder={"请选择" + props.title}/>
-                  )
-              }
-          </FormItem>)
-    }
 
     formAttachment = (props) => {
         const {getFieldDecorator} = this.props.form;
@@ -436,56 +487,30 @@ class PageForm extends React.Component {
           </Col>)
     }
 
-    formSelect = (props) => {
-        const {getFieldDecorator} = this.props.form;
-        const options = props.f7.map((item, index) => {
-            return <Option key={item.value} value={item.value}>{item.title}</Option>
-        })
-        return (
-          <FormItem key={props.key} label={props.title} {...formItemLayout} >
-              {
-                  getFieldDecorator(props.dataIndex, {
-                      initialValue: "1",
-                      rules: [
-                          {required: props.required, message: "请选择" + props.title}
-                      ]
-                  })(
-                    <Select defaultValue="1">
-                        {options}
-                    </Select>
-                  )
-              }
-          </FormItem>)
-    }
-
-    // 查询数据类型
-    isColumnSearch = (column) => {
-        return column.f7 && column.f7.table;
-    }
-
-    // 附件数据类型
-    isColumnAttachment = (column) => {
-        return column.f7 && column.f7.upload;
-    }
-
-    // 分录数据类型
-    isColumnEntity = (column) => {
-        return column.type == Array && column.f7 && column.f7.upload == undefined;
+    componentDidUpdate(preProp, preState) {
+        if (preProp.dataSource != this.props.dataSource) {
+            this.refreshData();
+        }
     }
 
     render() {
+        const {getFieldDecorator, getFieldValue} = this.props.form;
         var formItems = this.props.columns.map((item, index) => {
             var forItem;
-            if (this.isColumnAttachment(item)) {
+            if (formUtil.isColumnAttachment(item)) {
                 forItem = this.formAttachment(item);
-            } else if (this.isColumnEntity(item)) {
+            } else if (formUtil.isColumnEntity(item)) {
                 forItem = this.formEntity(item);
-            }else if (this.isColumnSearch(item)) {
+            } else if (formUtil.isColumnSearch(item)) {
                 forItem = this.formSearch(item);
+            } else if (formUtil.isColumnSelect(item)) {
+                forItem = formBuild.formSelect(item, getFieldDecorator, getFieldValue(item.dataIndex));
             } else if (item.type == String) {
-                forItem = this.formInput(item);
+                forItem = formBuild.formInput(item, getFieldDecorator);
+            } else if (item.type == Boolean) {
+                forItem = formBuild.formSwitch(item, getFieldDecorator, getFieldValue(item.dataIndex));
             } else if (item.type == Date) {
-                forItem = this.formDatePicker(item);
+                forItem = formBuild.formDatePicker(item, getFieldDecorator);
             }
             return forItem;
         })
@@ -553,7 +578,13 @@ export default Form.create({
                     if (item.type == Date) {
                         value = moment(value);
                     } else if (item.f7 && item.f7.table) {
-                        value = value[item.f7.showFiled]
+                        if (value) {
+                            value = value[item.f7.showFiled]
+                        }
+                    } else if (formUtil.isColumnSelect(item) && item.type == Object) {
+                        if (value) {
+                            value = value.value;
+                        }
                     }
                 }
             })

@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch'
 import {message} from 'antd'
-import * as CONFIG from '../../actions/constant/config'
+import {Config} from '../../actions/constant/config'
 
 import StringUtil from './stringutil'
 import HttpState from '../../actions/constant/httpstate'
@@ -28,7 +28,7 @@ export function request(route, params, props, success = null, error = null, {met
     // if (method !== 'GET') dispatch({ type: TYPES.REQUEST_LOADING })
     // 处理query
     const p = params ? '?' + Object.entries(params).map((i) => `${i[0]}=${encodeURI(i[1])}`).join('&') : '';
-    const uri = `${ CONFIG.API_URI }${ route }${ p }`;
+    const uri = `${ Config.baseUrl }${ route }${ p }`;
 
     var token = sessionStorage.getItem('token')
     console.log('cache token === ' + token)
@@ -38,30 +38,29 @@ export function request(route, params, props, success = null, error = null, {met
 
     let data = {method: method, headers: headers}
     if (method !== 'GET') data.body = body
-    console.log(`[${method}]:${uri}`)
     fetch(uri, data)
       .then((response) => {
           if (response.status === 401) {
-              message.warn('登录认证已过期，请从新登录')
-              error && error(result)
-              props.history.push('/login')
+              message.warn('登录认证已过期，请从新登录');
+              props.history.push(Config.loginPage);
           }
           return response.json();
       })
       .then((result) => {
-          console.log("request", result)
-          if (route == '/Api/User/Accesstoken') {
-              sessionStorage.setItem('token', result.token)
+          console.log("requst url ", `[${method}]:${uri}`)
+          console.log("result ", result)
+          if (route == Config.tokenUrl) {
+              sessionStorage.setItem('token', result.data.token)
           }
           if (result.code == HttpState.REQ_SUCCESS) {
               success && success(result)
           } else {
-              // dispatch({ type: TYPES.REQUEST_ERROR, ...data })
               error && error(result)
           }
       })
       .catch((err) => {
-          console.warn(err)
-          message.warn(err.message)
+          if (err) {
+              console.warn(err)
+          }
       })
 }

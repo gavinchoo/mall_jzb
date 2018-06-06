@@ -1,12 +1,14 @@
 import React from 'react'
-import {Table, Input, Icon, Button, Popconfirm} from 'antd';
+import {Table, Input, Icon, Button, Popconfirm, Row, Col} from 'antd';
 import './styles/editable.less'
 
 class EditableCell extends React.Component {
+
     state = {
         value: this.props.value,
-        editable: this.props.value ? false : true,
+        editable: this.props.value + "" ? false : true,
     }
+
     handleChange = (e) => {
         const value = e.target.value;
         this.setState({value});
@@ -19,6 +21,15 @@ class EditableCell extends React.Component {
     }
     edit = () => {
         this.setState({editable: true});
+    }
+
+    componentDidUpdate(preProps, preState) {
+        if (preProps.value != this.props.value) {
+            this.setState({
+                value: this.props.value,
+                editable: this.props.value + "" ? false : true,
+            })
+        }
     }
 
     render() {
@@ -41,7 +52,7 @@ class EditableCell extends React.Component {
                     </div>
                     :
                     <div className="editable-cell-text-wrapper">
-                        {value || ' '}
+                        {(value + "") || ''}
                         <Icon
                           type="edit"
                           className="editable-cell-icon"
@@ -57,11 +68,18 @@ class EditableCell extends React.Component {
 export default class EditableTable extends React.Component {
     constructor(props) {
         super(props);
+
+        this.initColumns();
+        this.initData();
+    }
+
+    initColumns = () => {
         this.columns = [...this.props.columns];
         this.columns.map((column, index) => {
             column.render = (text, record) => {
+                var value = (text instanceof Object) ? text.title : text;
                 return <EditableCell
-                  value={text}
+                  value={value}
                   onChange={this.onCellChange(record.key, column.dataIndex)}
                 />
             }
@@ -73,21 +91,47 @@ export default class EditableTable extends React.Component {
             width: 60,
             render: (text, record) => {
                 return (
-                  <Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record.key)}>
-                      <a href="javascript:;">Delete</a>
-                  </Popconfirm>
+                  <Row gutter={24}>
+                      <Col span={11} offset={1}>
+                          <a href="javascript:;" onClick={() => this.onEdit(record.key)}>Edit</a>
+                      </Col>
+                      <Col span={12}>
+                          <Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record.key)}>
+                              <a href="javascript:;">Delete</a>
+                          </Popconfirm>
+                      </Col>
+                  </Row>
                 );
             },
         })
+    }
 
+    initData = () => {
         if (this.props.dataSource) {
             this.props.dataSource.map((item, index) => {
                 item['key'] = index;
             })
+            this.state = {
+                dataSource: [...this.props.dataSource],
+            };
+        } else {
+            this.state = {dataSource: []};
         }
-        this.state = {
-            dataSource: this.props.dataSource ? [...this.props.dataSource] : [],
-        };
+    }
+
+    refreshData = () => {
+        if (this.props.dataSource) {
+            this.props.dataSource.map((item, index) => {
+                item['key'] = index;
+            })
+            this.setState({
+                dataSource: [...this.props.dataSource],
+            });
+        } else {
+            this.setState({
+                dataSource: [],
+            });
+        }
     }
 
     onCellChange = (key, dataIndex) => {
@@ -109,14 +153,28 @@ export default class EditableTable extends React.Component {
         this.props.onEntityChange(this.props.dataIndex, tempDataSource);
     }
 
+    onEdit = (key) => {
+        const dataSource = [...this.state.dataSource];
+        const recordItem = dataSource.filter(item => item.key == key);
+        this.props.onEntityEdit(this.props.dataIndex, recordItem[0]);
+    }
+
     handleAdd = () => {
         const {dataSource} = this.state;
         const newData = {
             key: dataSource.length
         };
+        var newDataSource = [...dataSource, newData];
         this.setState({
-            dataSource: [...dataSource, newData],
+            dataSource: newDataSource,
         });
+    }
+
+    componentDidUpdate(preProp, preState) {
+        if (preProp.dataSource != this.props.dataSource) {
+            console.log("componentDidUpdate");
+            this.refreshData();
+        }
     }
 
     render() {

@@ -2,9 +2,10 @@ import React from 'react'
 import {requestPost} from '../../../common/utils/request';
 import {Table, Divider, message} from 'antd'
 import {Link, Route} from 'react-router-dom'
+import {connect} from 'react-redux'
 import moment from 'moment'
 
-export default class PageList extends React.Component {
+class PageList extends React.Component {
 
     constructor(props) {
         super(props)
@@ -17,7 +18,15 @@ export default class PageList extends React.Component {
     }
 
     componentWillMount() {
-        this.queryForPage(1)
+        if (this.props.listData){
+            this.setState({
+                totalcount: this.props.listData.data.total,
+                listData: this.props.listData.data.result
+            })
+        }else {
+            this.queryForPage(1);
+        }
+
     }
 
     queryForPage(page) {
@@ -31,6 +40,12 @@ export default class PageList extends React.Component {
                 this.setState({
                     totalcount: result.data.total,
                     listData: result.data.result
+                })
+
+                const {dispatch} = this.props
+                dispatch({
+                    type: 'listData',
+                    listData: result
                 })
             },
             error: (message) => {
@@ -135,3 +150,12 @@ export default class PageList extends React.Component {
         )
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    console.log("mapStateToProps state ", state)
+    return {
+        listData: state.listData,
+    }
+}
+
+export default connect(mapStateToProps)(PageList)
